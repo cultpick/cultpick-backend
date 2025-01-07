@@ -1,8 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller('user')
+@ApiTags('User (유저)')
+@Controller('/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -10,5 +11,7 @@ export class UserController {
     summary: '유저 정보 조회',
   })
   @Get()
-  getUser() {}
+  getUser() {
+    // const user = this.userService.getUser();
+  }
 }
