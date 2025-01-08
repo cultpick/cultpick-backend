@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { SignUpRequest } from './dtos/requests/sign-up.request';
+import { SignUpRequest } from './dto/request/sign-up.request';
 import { PrismaService } from 'prisma/prisma.service';
 import { User } from '@prisma/client';
-import { SignInRequest } from './dtos/requests/sign-in.request';
+import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

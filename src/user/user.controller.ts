@@ -11,7 +11,5 @@ export class UserController {
     summary: '유저 정보 조회',
   })
   @Get()
-  getUser() {
-    // const user = this.userService.getUser();
-  }
+  async getUser() {}
 }

@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { SignUpRequest } from './dtos/requests/sign-up.request';
-import { SignInRequest } from './dtos/requests/sign-in.request';
-import { SignInResponse } from './dtos/responses/sign-in.response';
-import { CreateActionResponse } from 'src/common/dtos/id.response';
+import { SignUpRequest } from './dto/request/sign-up.request';
+import { SignInRequest } from './dto/request/sign-in.request';
+import { SignInResponse } from './dto/response/sign-in.response';
+import { CreateActionResponse } from 'src/common/dto/id.response';
 
 @ApiTags('Auth (인증)')
 @Controller('auth')
