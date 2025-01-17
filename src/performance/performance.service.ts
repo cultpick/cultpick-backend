@@ -10,6 +10,7 @@ export class PerformanceService {
     query: GetPerformanceListQuery,
   ): Promise<Performance[]> {
     const { startDate, endDate } = query;
+
     try {
       const response = await axios.get(
         `${process.env.OPEN_API_URL}?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=1&rows=10&shcate=EEEB`,

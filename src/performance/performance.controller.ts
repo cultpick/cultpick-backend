@@ -13,10 +13,13 @@ export class PerformanceController {
     summary: '행사 목록 조회',
     description: 'TODO: 지역코드 추가',
   })
-  @Get()
-  async getPerformanceList(@Query() query: GetPerformanceListQuery) {
+  @Get('/')
+  async getPerformanceList(
+    @Query() query: GetPerformanceListQuery,
+  ): Promise<GetPerformanceListResponse> {
     const performanceList =
       await this.performanceService.getPerformanceList(query);
+
     return new GetPerformanceListResponse(performanceList);
   }
 

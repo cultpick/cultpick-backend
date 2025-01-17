@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsBoolean,
-  IsDate,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -13,21 +12,19 @@ import { Genre } from 'src/performance/enum';
 export class GetPerformanceListQuery extends OffsetPaginationQuery {
   @ApiProperty({
     description: '공연시작일자',
-    format: 'date',
     example: '20250101',
   })
   @IsNotEmpty()
-  @IsDate()
-  startDate: Date;
+  @IsString()
+  startDate: string;
 
   @ApiProperty({
     description: '공연종료일자',
-    format: 'date',
     example: '20250131',
   })
   @IsNotEmpty()
-  @IsDate()
-  endDate: Date;
+  @IsString()
+  endDate: string;
 
   @ApiPropertyOptional({
     description: '장르 종류',

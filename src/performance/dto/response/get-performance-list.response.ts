@@ -63,8 +63,8 @@ export class GetPerformanceResponse {
         : performance.prfstate === '공연중'
           ? State.ONGOING
           : State.END;
-    this.startDate = performance.prfpdfrom;
-    this.endDate = performance.prfpdto;
+    this.startDate = performance.prfpdfrom.replace(/\./g, '');
+    this.endDate = performance.prfpdto.replace(/\./g, '');
     this.posterUrl = performance.poster;
     this.placeName = performance.fcltynm;
     this.isOpenRun = performance.openrun === 'Y';

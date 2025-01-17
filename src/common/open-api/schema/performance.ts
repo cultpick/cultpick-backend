@@ -1,12 +1,12 @@
 export type Performance = {
   mt20id: string;
   prfnm: string;
+  genrenm: string;
+  prfstate: string;
   prfpdfrom: string;
   prfpdto: string;
-  fcltynm: string;
   poster: string;
-  area: string;
-  genrenm: string;
+  fcltynm: string;
   openrun: string;
-  prfstate: string;
+  area: string;
 };
