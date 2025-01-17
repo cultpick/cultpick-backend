@@ -10,8 +10,8 @@ export class PerformanceController {
   constructor(private readonly performanceService: PerformanceService) {}
 
   @ApiOperation({
-    summary: '행사 목록 조회',
-    description: 'TODO: 지역코드 추가',
+    summary: '공연 목록 조회',
+    description: 'TODO: Query에 항목 추가',
   })
   @Get('/')
   async getPerformanceList(
@@ -24,7 +24,7 @@ export class PerformanceController {
   }
 
   @ApiOperation({
-    summary: '행사 상세 조회',
+    summary: '공연 상세 조회',
     description: 'TODO: OpenAPI 연결',
   })
   @Get('/:performanceId')
