@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import * as xml2js from 'xml2js';
-import { GetEventListQuery } from './dto/request/get-event-list.query';
+import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
 
 @Injectable()
-export class EventService {
-  async getEventList(query: GetEventListQuery) {
+export class PerformanceService {
+  async getPerformanceList(query: GetPerformanceListQuery) {
     const { startDate, endDate } = query;
     try {
       const response = await axios.get(

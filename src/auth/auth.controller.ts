@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpRequest } from './dto/request/sign-up.request';
 import { SignInRequest } from './dto/request/sign-in.request';
 import { SignInResponse } from './dto/response/sign-in.response';
-import { CreateActionResponse } from 'src/common/dto/id.response';
+import { CreateActionResponse } from 'src/common/dto/response/id.response';
 
 @ApiTags('Auth (인증)')
 @Controller('auth')
