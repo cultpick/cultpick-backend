@@ -4,7 +4,7 @@ import { PerformanceService } from './performance.service';
 import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
 import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
 
-@ApiTags('Performance (공연)')
+@ApiTags('[OpenAPI] Performance (공연)')
 @Controller('/performance')
 export class PerformanceController {
   constructor(private readonly performanceService: PerformanceService) {}
@@ -19,6 +19,19 @@ export class PerformanceController {
   ): Promise<GetPerformanceListResponse> {
     const performanceList =
       await this.performanceService.getPerformanceList(query);
+
+    return new GetPerformanceListResponse(performanceList);
+  }
+
+  @ApiOperation({
+    summary: '축제 목록 조회',
+  })
+  @Get('/festival')
+  async getFestivalList(
+    @Query() query: GetPerformanceListQuery,
+  ): Promise<GetPerformanceListResponse> {
+    const performanceList =
+      await this.performanceService.getFestivalList(query);
 
     return new GetPerformanceListResponse(performanceList);
   }
