@@ -2,6 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PerformanceService } from './performance.service';
 import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
+import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
 
 @ApiTags('Performance (공연)')
 @Controller('/performance')
@@ -16,7 +17,7 @@ export class PerformanceController {
   async getPerformanceList(@Query() query: GetPerformanceListQuery) {
     const performanceList =
       await this.performanceService.getPerformanceList(query);
-    return performanceList;
+    return new GetPerformanceListResponse(performanceList);
   }
 
   @ApiOperation({

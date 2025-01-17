@@ -9,3 +9,9 @@ export enum Genre {
   CIRCUS_MAGIC = 'CIRCUS_MAGIC', // 서커스/마술
   MUSICAL = 'MUSICAL', // 뮤지컬
 }
+
+export enum State {
+  COMING = 'COMING', // 공연예정
+  ONGOING = 'ONGOING', // 공연중
+  END = 'END', // 공연완료
+}

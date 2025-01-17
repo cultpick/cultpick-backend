@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import * as xml2js from 'xml2js';
 import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
+import { xmlToJson } from 'src/common/util/xml-to-json';
+import { Performance } from 'src/common/open-api/schema/performance';
 
 @Injectable()
 export class PerformanceService {
-  async getPerformanceList(query: GetPerformanceListQuery) {
+  async getPerformanceList(
+    query: GetPerformanceListQuery,
+  ): Promise<Performance[]> {
     const { startDate, endDate } = query;
     try {
       const response = await axios.get(
@@ -13,15 +16,11 @@ export class PerformanceService {
         { responseType: 'text' },
       );
 
-      // XML to JSON
-      const parser = new xml2js.Parser({ explicitArray: false });
-      const jsonResult = await parser.parseStringPromise(response.data);
+      const performanceList = (await xmlToJson(response.data)) as Performance[];
 
-      const eventList = jsonResult.dbs.db;
-
-      return eventList;
+      return performanceList;
     } catch (error) {
-      throw new Error(`Failed to fetch events: ${error.message}`);
+      throw new Error(`OpenAPI 오류: ${error.message}`);
     }
   }
 }
