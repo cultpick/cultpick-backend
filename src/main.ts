@@ -10,6 +10,11 @@ async function bootstrap() {
     .setDescription('The CULPICK API description')
     .build();
 
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
 
