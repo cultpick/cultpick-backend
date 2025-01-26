@@ -11,7 +11,6 @@ export class PerformanceController {
 
   @ApiOperation({
     summary: '추천 공연 목록 조회',
-    description: 'TODO: 응답에 유료 여부 정보 추가',
   })
   @Get('/')
   async getRecommendedPerformanceList(
