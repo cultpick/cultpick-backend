@@ -10,3 +10,7 @@ export type Performance = {
   openrun: string;
   area: string;
 };
+
+export type PerformanceWithPrice = Performance & {
+  pcseguidance: string; //티켓가격
+};

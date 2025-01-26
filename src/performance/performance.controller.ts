@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PerformanceService } from './performance.service';
-import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
-import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
+import { GetPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
+import { GetRecommendedPerformanceListResponse } from './dto/response/get-recommended-performance-list.response';
 
 @ApiTags('[OpenAPI] Performance (공연)')
 @Controller('/performance')
@@ -10,36 +10,16 @@ export class PerformanceController {
   constructor(private readonly performanceService: PerformanceService) {}
 
   @ApiOperation({
-    summary: '공연 목록 조회',
-    description: 'TODO: Query에 항목 추가',
+    summary: '추천 공연 목록 조회',
+    description: 'TODO: 응답에 유료 여부 정보 추가',
   })
   @Get('/')
-  async getPerformanceList(
+  async getRecommendedPerformanceList(
     @Query() query: GetPerformanceListQuery,
-  ): Promise<GetPerformanceListResponse> {
+  ): Promise<GetRecommendedPerformanceListResponse> {
     const performanceList =
-      await this.performanceService.getPerformanceList(query);
+      await this.performanceService.getRecommendedPerformanceList(query);
 
-    return new GetPerformanceListResponse(performanceList);
+    return new GetRecommendedPerformanceListResponse(performanceList);
   }
-
-  @ApiOperation({
-    summary: '축제 목록 조회',
-  })
-  @Get('/festival')
-  async getFestivalList(
-    @Query() query: GetPerformanceListQuery,
-  ): Promise<GetPerformanceListResponse> {
-    const performanceList =
-      await this.performanceService.getFestivalList(query);
-
-    return new GetPerformanceListResponse(performanceList);
-  }
-
-  @ApiOperation({
-    summary: '공연 상세 조회',
-    description: 'TODO: OpenAPI 연결',
-  })
-  @Get('/:performanceId')
-  getPerformanceDetail() {}
 }

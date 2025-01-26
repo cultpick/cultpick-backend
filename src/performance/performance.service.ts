@@ -1,46 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
-import { GetPerformanceListQuery } from './dto/request/get-performance-list.query';
+import { GetPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
 import { xmlToJson } from 'src/common/util/xml-to-json';
-import { Performance } from 'src/common/open-api/schema/performance';
+import {
+  Performance,
+  PerformanceWithPrice,
+} from 'src/common/open-api/schema/performance';
+import { getStartAndEndMonthDate } from 'src/common/util/dayjs';
 
 @Injectable()
 export class PerformanceService {
-  async getPerformanceList(
+  async getRecommendedPerformanceList(
     query: GetPerformanceListQuery,
-  ): Promise<Performance[]> {
-    const { startDate, endDate, page, size } = query;
+  ): Promise<PerformanceWithPrice[]> {
+    const { page, size } = query;
+    const { startDate, endDate } = getStartAndEndMonthDate();
 
     try {
-      const response = await axios.get(
+      const performanceListResponse = await axios.get(
         `${process.env.OPEN_API_URL}/pblprfr?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=${page}&rows=${size}`,
         { responseType: 'text' },
       );
 
-      const performanceList = (await xmlToJson(response.data)) as Performance[];
+      const parsedPerformanceList = (await xmlToJson(
+        performanceListResponse.data,
+      )) as Performance[];
 
-      return performanceList;
+      const performanceWithPriceList: PerformanceWithPrice[] = [];
+
+      for (const parsedPerformance of parsedPerformanceList) {
+        const performanceDetailResponse = await axios.get(
+          `${process.env.OPEN_API_URL}/pblprfr/${parsedPerformance.mt20id}?service=${process.env.SERVICE_KEY}`,
+          { responseType: 'text' },
+        );
+
+        const parsedPerformanceDetail = (await xmlToJson(
+          performanceDetailResponse.data,
+        )) as PerformanceWithPrice[];
+
+        performanceWithPriceList.push(parsedPerformanceDetail[0]);
+      }
+
+      return performanceWithPriceList;
     } catch (error) {
-      throw new Error(`OpenAPI 오류: ${error.message}`);
-    }
-  }
-
-  async getFestivalList(
-    query: GetPerformanceListQuery,
-  ): Promise<Performance[]> {
-    const { startDate, endDate } = query;
-
-    try {
-      const response = await axios.get(
-        `${process.env.OPEN_API_URL}/prffest?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=1&rows=10&shcate=EEEB`,
-        { responseType: 'text' },
-      );
-
-      const performanceList = (await xmlToJson(response.data)) as Performance[];
-
-      return performanceList;
-    } catch (error) {
-      throw new Error(`OpenAPI 오류: ${error.message}`);
+      throw new InternalServerErrorException(`OpenAPI 오류: ${error.message}`);
     }
   }
 }
