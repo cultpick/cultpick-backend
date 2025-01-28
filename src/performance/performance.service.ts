@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
-import { GetPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
+import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
 import { xmlToJson } from 'src/common/util/xml-to-json';
 import {
   Performance,
@@ -11,7 +11,7 @@ import { getStartAndEndMonthDate } from 'src/common/util/dayjs';
 @Injectable()
 export class PerformanceService {
   async getRecommendedPerformanceList(
-    query: GetPerformanceListQuery,
+    query: GetRecommendedPerformanceListQuery,
   ): Promise<PerformanceWithPrice[]> {
     const { page, size } = query;
     const { startDate, endDate } = getStartAndEndMonthDate();
