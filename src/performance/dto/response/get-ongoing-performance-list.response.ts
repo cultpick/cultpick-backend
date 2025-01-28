@@ -49,9 +49,18 @@ export class GetOngoingPerformanceResponse {
 }
 
 export class GetOngoingPerformanceListResponse {
+  @ApiProperty({
+    description: '공연 목록 수',
+  })
+  count: number;
+
+  @ApiProperty({
+    description: '공연 목록',
+  })
   performanceList: GetOngoingPerformanceResponse[];
 
   constructor(performanceList: PerformanceWithPrice[]) {
+    this.count = performanceList.length;
     this.performanceList = performanceList.map((performance) => {
       return new GetOngoingPerformanceResponse(performance);
     });
