@@ -13,10 +13,10 @@ model User {
   email    String @unique @db.VarChar(255)
   password String @db.VarChar(255)
 
-  name    String   @db.VarChar(255)
-  gender  Gender
-  birth   DateTime
-  address String   @db.VarChar(255)
+  name        String   @db.VarChar(255)
+  gender      Gender
+  birth       DateTime
+  addressCode String   @db.VarChar(255)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

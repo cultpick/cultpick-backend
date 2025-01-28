@@ -29,10 +29,10 @@ export class SignUpRequest extends SignInRequest {
   birth: Date;
 
   @ApiProperty({
-    description: '주소',
-    example: '서울',
+    description: '주소 코드',
+    example: '5111',
   })
   @IsNotEmpty()
   @IsString()
-  address: string;
+  addressCode: string;
 }

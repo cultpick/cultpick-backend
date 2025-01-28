@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signUp(body: SignUpRequest): Promise<User> {
-    const { email, password, name, birth, gender, address } = body;
+    const { email, password, name, birth, gender, addressCode } = body;
 
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -38,7 +38,7 @@ export class AuthService {
         name,
         birth,
         gender,
-        address,
+        addressCode,
       },
     });
 
