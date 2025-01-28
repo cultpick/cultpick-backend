@@ -16,7 +16,11 @@ async function bootstrap() {
   });
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+    },
+  });
 
   await app.listen(3000);
 

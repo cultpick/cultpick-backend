@@ -7,7 +7,7 @@ import { SignInResponse } from './dto/response/sign-in.response';
 import { CreateActionResponse } from 'src/common/dto/response/id.response';
 
 @ApiTags('Auth (인증)')
-@Controller('auth')
+@Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -15,7 +15,7 @@ export class AuthController {
     summary: '회원가입',
     description: 'TODO: 이메일 인증 기능',
   })
-  @Post('sign-up')
+  @Post('/sign-up')
   async signUp(@Body() body: SignUpRequest): Promise<CreateActionResponse> {
     const createdUser = await this.authService.signUp(body);
 
@@ -26,7 +26,7 @@ export class AuthController {
     summary: '로그인',
     description: 'accessToken 유효기간: 1일',
   })
-  @Post('sign-in')
+  @Post('/sign-in')
   async signIn(@Body() body: SignInRequest): Promise<SignInResponse> {
     const accessToken = await this.authService.signIn(body);
 
