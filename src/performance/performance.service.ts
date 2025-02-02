@@ -9,9 +9,14 @@ import {
 import { getStartAndEndMonthDate } from 'src/common/util/dayjs';
 import { GetOngoingPerformanceListQuery } from './dto/request/get-ongoing-performance-list.query';
 import { PerformanceStateCode } from './enum';
+import { UserInfo } from 'src/auth/type';
+import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class PerformanceService {
+  constructor(private readonly prismaService: PrismaService) {}
+
   async getRecommendedPerformanceList(
     query: GetRecommendedPerformanceListQuery,
   ): Promise<PerformanceWithPrice[]> {
@@ -43,6 +48,22 @@ export class PerformanceService {
     }
 
     return performanceWithPriceList;
+  }
+
+  async getPersonalizedPerformanceList(
+    user: UserInfo,
+    query: GetPersonalizedPerformanceListQuery,
+  ) {
+    // const { page, size } = query;
+    // const { startDate, endDate } = getStartAndEndMonthDate();
+
+    const existingUser = await this.prismaService.user.findFirst({
+      where: {
+        id: user.id,
+      },
+    });
+
+    return [];
   }
 
   async getOngoingPerformanceList(

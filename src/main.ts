@@ -8,6 +8,14 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('CULPICK API')
     .setDescription('The CULPICK API description')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Bearer',
+      },
+      'access-token',
+    )
     .build();
 
   app.enableCors({
