@@ -24,7 +24,7 @@ export class AuthService {
       birth,
       gender,
       addressCode,
-      favoriteCategoryIds,
+      favoriteCategoryCodes,
     } = body;
 
     const user = await this.prismaService.user.findFirst({
@@ -52,11 +52,11 @@ export class AuthService {
           },
         });
 
-        if (favoriteCategoryIds?.length) {
+        if (favoriteCategoryCodes?.length) {
           await prisma.userToCategory.createMany({
-            data: favoriteCategoryIds.map((categoryId) => ({
+            data: favoriteCategoryCodes.map((categoryCode) => ({
               userId: user.id,
-              categoryId,
+              categoryCode,
             })),
           });
         }

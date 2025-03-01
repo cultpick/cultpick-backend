@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import { UserInfo } from 'src/auth/type';
 
@@ -24,5 +25,21 @@ export class UserService {
       ...existingUser,
       favoriteCategoryList,
     };
+  }
+
+  async getUserByUserId(userId: number): Promise<User> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        `해당 사용자를 찾을 수 없습니다. (userId: ${userId})`,
+      );
+    }
+
+    return user;
   }
 }

@@ -38,9 +38,9 @@ export class SignUpRequest extends SignInRequest {
 
   @ApiProperty({
     description: '관심 카테고리 ID 리스트',
-    example: [1, 2, 3],
+    example: ['AAAA', 'BBBC'],
   })
   @IsNotEmpty()
   @IsString({ each: true })
-  favoriteCategoryIds: number[];
+  favoriteCategoryCodes: string[];
 }
