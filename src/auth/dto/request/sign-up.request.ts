@@ -35,4 +35,12 @@ export class SignUpRequest extends SignInRequest {
   @IsNotEmpty()
   @IsString()
   addressCode: string;
+
+  @ApiProperty({
+    description: '관심 카테고리 ID 리스트',
+    example: [1, 2, 3],
+  })
+  @IsNotEmpty()
+  @IsString({ each: true })
+  favoriteCategoryIds: number[];
 }

@@ -17,7 +17,15 @@ export class AuthService {
   ) {}
 
   async signUp(body: SignUpRequest): Promise<User> {
-    const { email, password, name, birth, gender, addressCode } = body;
+    const {
+      email,
+      password,
+      name,
+      birth,
+      gender,
+      addressCode,
+      favoriteCategoryIds,
+    } = body;
 
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -31,16 +39,31 @@ export class AuthService {
       );
     }
 
-    const createdUser = await this.prismaService.user.create({
-      data: {
-        email,
-        password,
-        name,
-        birth,
-        gender,
-        addressCode,
+    const createdUser = await this.prismaService.$transaction(
+      async (prisma) => {
+        const user = await prisma.user.create({
+          data: {
+            email,
+            password,
+            name,
+            birth,
+            gender,
+            addressCode,
+          },
+        });
+
+        if (favoriteCategoryIds?.length) {
+          await prisma.userToCategory.createMany({
+            data: favoriteCategoryIds.map((categoryId) => ({
+              userId: user.id,
+              categoryId,
+            })),
+          });
+        }
+
+        return user;
       },
-    });
+    );
 
     return createdUser;
   }
