@@ -25,12 +25,12 @@ model User {
 }
 
 model UserToCategory {
-  userId     Int
-  categoryId Int
+  userId       Int
+  categoryCode String
 
   user User @relation(fields: [userId], references: [id])
 
-  @@id([userId, categoryId])
+  @@id([userId, categoryCode])
 }
 
 enum Gender {

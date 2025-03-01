@@ -1,38 +1,38 @@
 export const categoryData = [
   {
-    id: 1,
+    code: 'AAAA',
     name: '연극',
   },
   {
-    id: 2,
+    code: 'BBBC',
     name: '무용',
   },
   {
-    id: 3,
+    code: 'BBBE',
     name: '대중무용',
   },
   {
-    id: 4,
+    code: 'CCCA',
     name: '클래식',
   },
   {
-    id: 5,
+    code: 'CCCC',
     name: '국악',
   },
   {
-    id: 6,
+    code: 'CCCD',
     name: '대중음악',
   },
   {
-    id: 7,
+    code: 'EEEA',
     name: '복합',
   },
   {
-    id: 8,
+    code: 'EEEB',
     name: '서커스·마술',
   },
   {
-    id: 9,
+    code: 'GGGA',
     name: '뮤지컬',
   },
 ];
