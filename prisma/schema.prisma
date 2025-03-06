@@ -22,6 +22,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   UserToCategory UserToCategory[]
+  Pick           Pick[]
 }
 
 model UserToCategory {
@@ -31,6 +32,15 @@ model UserToCategory {
   user User @relation(fields: [userId], references: [id])
 
   @@id([userId, categoryCode])
+}
+
+model Pick {
+  userId        Int
+  performanceId String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@id([userId, performanceId])
 }
 
 enum Gender {
