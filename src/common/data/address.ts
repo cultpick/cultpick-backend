@@ -1,30 +1,5 @@
 export const addressData = [
   {
-    code: '5100',
-    name: '강원도',
-    subregions: [
-      { code: '5111', name: '춘천시' },
-      { code: '5113', name: '원주시' },
-      { code: '5115', name: '강릉시' },
-      { code: '5117', name: '동해시' },
-      { code: '5119', name: '태백시' },
-      { code: '5121', name: '속초시' },
-      { code: '5123', name: '삼척시' },
-      { code: '5172', name: '홍천군' },
-      { code: '5173', name: '횡성군' },
-      { code: '5175', name: '영월군' },
-      { code: '5176', name: '평창군' },
-      { code: '5177', name: '정선군' },
-      { code: '5178', name: '철원군' },
-      { code: '5179', name: '화천군' },
-      { code: '5180', name: '양구군' },
-      { code: '5181', name: '인제군' },
-      { code: '5182', name: '고성군' },
-      { code: '5183', name: '양양군' },
-    ],
-  },
-  {
-    code: '1100',
     name: '서울',
     subregions: [
       { code: '1111', name: '종로구' },
@@ -55,8 +30,7 @@ export const addressData = [
     ],
   },
   {
-    code: '2600',
-    name: '부산광역시',
+    name: '부산',
     subregions: [
       { code: '2611', name: '중구' },
       { code: '2614', name: '서구' },
@@ -77,8 +51,7 @@ export const addressData = [
     ],
   },
   {
-    code: '2700',
-    name: '대구광역시',
+    name: '대구',
     subregions: [
       { code: '2711', name: '중구' },
       { code: '2714', name: '동구' },
@@ -91,7 +64,6 @@ export const addressData = [
     ],
   },
   {
-    code: '2800',
     name: '인천',
     subregions: [
       { code: '2811', name: '중구' },
@@ -107,8 +79,7 @@ export const addressData = [
     ],
   },
   {
-    code: '2900',
-    name: '광주광역시',
+    name: '광주',
     subregions: [
       { code: '2911', name: '동구' },
       { code: '2914', name: '서구' },
@@ -118,8 +89,7 @@ export const addressData = [
     ],
   },
   {
-    code: '3000',
-    name: '대전광역시',
+    name: '대전',
     subregions: [
       { code: '3011', name: '동구' },
       { code: '3014', name: '중구' },
@@ -129,8 +99,7 @@ export const addressData = [
     ],
   },
   {
-    code: '3100',
-    name: '울산광역시',
+    name: '울산',
     subregions: [
       { code: '3111', name: '중구' },
       { code: '3114', name: '남구' },
@@ -140,12 +109,10 @@ export const addressData = [
     ],
   },
   {
-    code: '3600',
-    name: '세종특별자치시',
+    name: '세종',
     subregions: [{ code: '3611', name: '세종특별자치시' }],
   },
   {
-    code: '4100',
     name: '경기',
     subregions: [
       { code: '4111', name: '수원시' },
@@ -182,8 +149,7 @@ export const addressData = [
     ],
   },
   {
-    code: '5100',
-    name: '강원특별자치도',
+    name: '강원',
     subregions: [
       { code: '5111', name: '춘천시' },
       { code: '5113', name: '원주시' },
@@ -206,7 +172,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4300',
     name: '충청북도',
     subregions: [
       { code: '4311', name: '청주시' },
@@ -223,7 +188,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4400',
     name: '충청남도',
     subregions: [
       { code: '4413', name: '천안시' },
@@ -244,7 +208,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4500',
     name: '전라북도',
     subregions: [
       { code: '4511', name: '전주시' },
@@ -264,7 +227,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4600',
     name: '전라남도',
     subregions: [
       { code: '4611', name: '목포시' },
@@ -292,7 +254,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4700',
     name: '경상북도',
     subregions: [
       { code: '4711', name: '포항시' },
@@ -321,7 +282,6 @@ export const addressData = [
     ],
   },
   {
-    code: '4800',
     name: '경상남도',
     subregions: [
       { code: '4812', name: '창원시' },
@@ -345,8 +305,7 @@ export const addressData = [
     ],
   },
   {
-    code: '5000',
-    name: '제주특별자치도',
+    name: '제주',
     subregions: [
       { code: '5011', name: '제주시' },
       { code: '5013', name: '서귀포시' },
