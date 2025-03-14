@@ -3,13 +3,11 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PerformanceService } from './performance.service';
 import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
 import { GetOngoingPerformanceListQuery } from './dto/request/get-ongoing-performance-list.query';
-import { GetRecommendedPerformanceListResponse } from './dto/response/get-recommended-performance-list.response';
-import { GetOngoingPerformanceListResponse } from './dto/response/get-ongoing-performance-list.response';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
-import { GetPersonalizedPerformanceListResponse } from './dto/response/get-personalized-performance-list.response';
+import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
 
 @ApiTags('[Open API] Performance (공연)')
 @ApiBearerAuth('access-token')
@@ -23,11 +21,11 @@ export class PerformanceController {
   @Get('/recommended')
   async getRecommendedPerformanceList(
     @Query() query: GetRecommendedPerformanceListQuery,
-  ): Promise<GetRecommendedPerformanceListResponse> {
+  ): Promise<GetPerformanceListResponse> {
     const performanceList =
       await this.performanceService.getRecommendedPerformanceList(query);
 
-    return new GetRecommendedPerformanceListResponse(performanceList);
+    return new GetPerformanceListResponse(performanceList);
   }
 
   @ApiOperation({
@@ -39,11 +37,11 @@ export class PerformanceController {
   async getPersonalizedPerformanceList(
     @CurrentUser() user: UserInfo,
     @Query() query: GetPersonalizedPerformanceListQuery,
-  ) {
+  ): Promise<GetPerformanceListResponse> {
     const performanceList =
       await this.performanceService.getPersonalizedPerformanceList(user, query);
 
-    return new GetPersonalizedPerformanceListResponse(performanceList);
+    return new GetPerformanceListResponse(performanceList);
   }
 
   @ApiOperation({
@@ -52,10 +50,10 @@ export class PerformanceController {
   @Get('/ongoing')
   async getOngoingPerformanceList(
     @Query() query: GetOngoingPerformanceListQuery,
-  ) {
+  ): Promise<GetPerformanceListResponse> {
     const performanceList =
       await this.performanceService.getOngoingPerformanceList(query);
 
-    return new GetOngoingPerformanceListResponse(performanceList);
+    return new GetPerformanceListResponse(performanceList);
   }
 }

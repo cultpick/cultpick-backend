@@ -8,6 +8,9 @@ import { CreatePickRequest } from './dto/request/create-pick.request';
 import { Pick } from '@prisma/client';
 import { UserInfo } from 'src/auth/type';
 import { DeletePickListRequest } from './dto/request/delete-pick.request';
+import { PerformanceWithPrice } from 'src/common/open-api/schema/performance';
+import axios from 'axios';
+import { xmlToJson } from 'src/common/util/xml-to-json';
 
 @Injectable()
 export class PickService {
@@ -39,14 +42,29 @@ export class PickService {
     return createdPick;
   }
 
-  async getPickList(user: UserInfo): Promise<Pick[]> {
+  async getPickList(user: UserInfo): Promise<PerformanceWithPrice[]> {
     const pickList = await this.prismaService.pick.findMany({
       where: {
         userId: user.id,
       },
     });
 
-    return pickList;
+    const performanceWithPriceList: PerformanceWithPrice[] = [];
+
+    for (const pick of pickList) {
+      const performanceDetailResponse = await axios.get(
+        `${process.env.OPEN_API_URL}/pblprfr/${pick.performanceId}?service=${process.env.SERVICE_KEY}`,
+        { responseType: 'text' },
+      );
+
+      const parsedPerformanceDetail = (await xmlToJson(
+        performanceDetailResponse.data,
+      )) as PerformanceWithPrice[];
+
+      performanceWithPriceList.push(parsedPerformanceDetail[0]);
+    }
+
+    return performanceWithPriceList;
   }
 
   async deletePickList(

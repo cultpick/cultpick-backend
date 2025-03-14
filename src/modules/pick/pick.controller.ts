@@ -8,6 +8,7 @@ import { UserInfo } from 'src/auth/type';
 import { CreatePickResponse } from './dto/response/create-pick.response';
 import { DeletePickListRequest } from './dto/request/delete-pick.request';
 import { DeletePickListResponse } from './dto/response/delete-pick-list.response';
+import { GetPerformanceListResponse } from '../performance/dto/response/get-performance-list.response';
 
 @ApiTags('Pick (픽)')
 @ApiBearerAuth('access-token')
@@ -31,11 +32,13 @@ export class PickController {
 
   @ApiOperation({
     summary: '픽 목록 조회',
-    // TODO: OpenAPI 활용하여 상세 정보 가져오기
   })
   @Get('/')
-  async getPickList(@CurrentUser() user: UserInfo) {
-    return await this.pickService.getPickList(user);
+  async getPickList(
+    @CurrentUser() user: UserInfo,
+  ): Promise<GetPerformanceListResponse> {
+    const pickList = await this.pickService.getPickList(user);
+    return new GetPerformanceListResponse(pickList);
   }
 
   @ApiOperation({
