@@ -25,7 +25,7 @@ export const addressData = [
   },
   {
     code: '1100',
-    name: '서울특별시',
+    name: '서울',
     subregions: [
       { code: '1111', name: '종로구' },
       { code: '1114', name: '중구' },
@@ -92,7 +92,7 @@ export const addressData = [
   },
   {
     code: '2800',
-    name: '인천광역시',
+    name: '인천',
     subregions: [
       { code: '2811', name: '중구' },
       { code: '2814', name: '동구' },
@@ -146,7 +146,7 @@ export const addressData = [
   },
   {
     code: '4100',
-    name: '경기도',
+    name: '경기',
     subregions: [
       { code: '4111', name: '수원시' },
       { code: '4113', name: '성남시' },

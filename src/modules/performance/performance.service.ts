@@ -12,7 +12,7 @@ import { PerformanceStateCode } from './enum';
 import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
 import { PrismaService } from 'prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class PerformanceService {

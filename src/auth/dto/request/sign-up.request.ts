@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SignInRequest } from './sign-in.request';
 import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Gender } from 'src/user/enum';
+import { Gender } from 'src/modules/user/enum';
 
 export class SignUpRequest extends SignInRequest {
   @ApiProperty({

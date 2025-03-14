@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { PerformanceModule } from './performance/performance.module';
-import { AddressModule } from './address/address.module';
 import { ConfigModule } from '@nestjs/config';
-import { CategoryModule } from './category/category.module';
-import { PickModule } from './pick/pick.module';
+import { AddressModule } from './modules/address/address.module';
+import { PerformanceModule } from './modules/performance/performance.module';
+import { PickModule } from './modules/pick/pick.module';
+import { UserModule } from './modules/user/user.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [

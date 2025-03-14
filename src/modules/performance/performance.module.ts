@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PerformanceController } from './performance.controller';
 import { PerformanceService } from './performance.service';
 import { PrismaService } from 'prisma/prisma.service';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [UserModule],
