@@ -9,7 +9,7 @@ import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
 import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
 
-@ApiTags('[Open API] Performance (공연)')
+@ApiTags('Performance (공연)')
 @ApiBearerAuth('access-token')
 @Controller('/performance')
 export class PerformanceController {
