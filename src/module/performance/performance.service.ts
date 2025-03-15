@@ -14,6 +14,9 @@ import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personali
 import { PrismaService } from 'prisma/prisma.service';
 import { UserService } from '../user/user.service';
 
+const OPEN_API_URL = process.env.OPEN_API_URL;
+const SERVICE_KEY = process.env.SERVICE_KEY;
+
 @Injectable()
 export class PerformanceService {
   constructor(
@@ -27,29 +30,23 @@ export class PerformanceService {
     const { page, size } = query;
     const { startDate, endDate } = getStartAndEndMonthDate();
 
-    const performanceListResponse = await axios.get(
-      `${process.env.OPEN_API_URL}/pblprfr?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=${page}&rows=${size}`,
-      { responseType: 'text' },
-    );
+    const performanceListResponse = await axios.get(`${OPEN_API_URL}/pblprfr`, {
+      params: {
+        service: SERVICE_KEY,
+        stdate: startDate,
+        eddate: endDate,
+        cpage: page,
+        rows: size,
+      },
+    });
 
     const parsedPerformanceList = (await xmlToJson(
       performanceListResponse.data,
     )) as Performance[];
 
-    const performanceWithPriceList: PerformanceWithPrice[] = [];
-
-    for (const parsedPerformance of parsedPerformanceList) {
-      const performanceDetailResponse = await axios.get(
-        `${process.env.OPEN_API_URL}/pblprfr/${parsedPerformance.mt20id}?service=${process.env.SERVICE_KEY}`,
-        { responseType: 'text' },
-      );
-
-      const parsedPerformanceDetail = (await xmlToJson(
-        performanceDetailResponse.data,
-      )) as PerformanceWithPrice[];
-
-      performanceWithPriceList.push(parsedPerformanceDetail[0]);
-    }
+    const performanceWithPriceList = await this.getPerformanceListWithDetail(
+      parsedPerformanceList,
+    );
 
     return performanceWithPriceList;
   }
@@ -76,8 +73,18 @@ export class PerformanceService {
 
     for (const favoriteCategory of favoriteCategoryList) {
       const performanceListResponse = await axios.get(
-        `${process.env.OPEN_API_URL}/pblprfr?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=${page}&rows=${categorySize}&shcate=${favoriteCategory.categoryCode}&signgucodesub=${existingUser.addressCode}`,
-        { responseType: 'text' },
+        `${OPEN_API_URL}/pblprfr`,
+        {
+          params: {
+            service: SERVICE_KEY,
+            stdate: startDate,
+            eddate: endDate,
+            cpage: page,
+            rows: categorySize,
+            shcate: favoriteCategory.categoryCode,
+            signgucodesub: existingUser.addressCode,
+          },
+        },
       );
 
       const parsedPerformanceList = (await xmlToJson(
@@ -87,20 +94,9 @@ export class PerformanceService {
       mergedPerformanceList.push(...parsedPerformanceList);
     }
 
-    const performanceWithPriceList: PerformanceWithPrice[] = [];
-
-    for (const mergedPerformance of mergedPerformanceList) {
-      const performanceDetailResponse = await axios.get(
-        `${process.env.OPEN_API_URL}/pblprfr/${mergedPerformance.mt20id}?service=${process.env.SERVICE_KEY}`,
-        { responseType: 'text' },
-      );
-
-      const parsedPerformanceDetail = (await xmlToJson(
-        performanceDetailResponse.data,
-      )) as PerformanceWithPrice[];
-
-      performanceWithPriceList.push(parsedPerformanceDetail[0]);
-    }
+    const performanceWithPriceList = await this.getPerformanceListWithDetail(
+      mergedPerformanceList,
+    );
 
     return performanceWithPriceList;
   }
@@ -111,21 +107,42 @@ export class PerformanceService {
     const { page, size } = query;
     const { startDate, endDate } = getStartAndEndMonthDate();
 
-    const performanceListResponse = await axios.get(
-      `${process.env.OPEN_API_URL}/pblprfr?service=${process.env.SERVICE_KEY}&stdate=${startDate}&eddate=${endDate}&cpage=${page}&rows=${size}&prfstate=${PerformanceStateCode.ONGOING}`,
-      { responseType: 'text' },
-    );
+    const performanceListResponse = await axios.get(`${OPEN_API_URL}/pblprfr`, {
+      params: {
+        service: SERVICE_KEY,
+        stdate: startDate,
+        eddate: endDate,
+        cpage: page,
+        rows: size,
+        prfstate: PerformanceStateCode.ONGOING,
+      },
+    });
 
     const parsedPerformanceList = (await xmlToJson(
       performanceListResponse.data,
     )) as Performance[];
 
+    const performanceWithPriceList = await this.getPerformanceListWithDetail(
+      parsedPerformanceList,
+    );
+
+    return performanceWithPriceList;
+  }
+
+  async getPerformanceListWithDetail(
+    performanceList: Performance[],
+  ): Promise<PerformanceWithPrice[]> {
     const performanceWithPriceList: PerformanceWithPrice[] = [];
 
-    for (const parsedPerformance of parsedPerformanceList) {
+    for (const performance of performanceList) {
       const performanceDetailResponse = await axios.get(
-        `${process.env.OPEN_API_URL}/pblprfr/${parsedPerformance.mt20id}?service=${process.env.SERVICE_KEY}`,
-        { responseType: 'text' },
+        `${OPEN_API_URL}/pblprfr`,
+        {
+          params: {
+            service: SERVICE_KEY,
+            mt20id: performance.mt20id,
+          },
+        },
       );
 
       const parsedPerformanceDetail = (await xmlToJson(

@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { AddressModule } from './modules/address/address.module';
-import { PerformanceModule } from './modules/performance/performance.module';
-import { PickModule } from './modules/pick/pick.module';
-import { UserModule } from './modules/user/user.module';
-import { CategoryModule } from './modules/category/category.module';
+import { AddressModule } from './module/address/address.module';
+import { PerformanceModule } from './module/performance/performance.module';
+import { PickModule } from './module/pick/pick.module';
+import { UserModule } from './module/user/user.module';
+import { CategoryModule } from './module/category/category.module';
 
 @Module({
   imports: [
