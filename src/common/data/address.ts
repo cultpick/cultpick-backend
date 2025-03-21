@@ -172,7 +172,7 @@ export const addressData = [
     ],
   },
   {
-    name: '충청북도',
+    name: '충북',
     subregions: [
       { code: '4311', name: '청주시' },
       { code: '4313', name: '충주시' },
@@ -188,7 +188,7 @@ export const addressData = [
     ],
   },
   {
-    name: '충청남도',
+    name: '충남',
     subregions: [
       { code: '4413', name: '천안시' },
       { code: '4415', name: '공주시' },
@@ -208,7 +208,7 @@ export const addressData = [
     ],
   },
   {
-    name: '전라북도',
+    name: '전북',
     subregions: [
       { code: '4511', name: '전주시' },
       { code: '4513', name: '군산시' },
@@ -227,7 +227,7 @@ export const addressData = [
     ],
   },
   {
-    name: '전라남도',
+    name: '전남',
     subregions: [
       { code: '4611', name: '목포시' },
       { code: '4613', name: '여수시' },
@@ -254,7 +254,7 @@ export const addressData = [
     ],
   },
   {
-    name: '경상북도',
+    name: '경북',
     subregions: [
       { code: '4711', name: '포항시' },
       { code: '4713', name: '경주시' },
@@ -282,7 +282,7 @@ export const addressData = [
     ],
   },
   {
-    name: '경상남도',
+    name: '경남',
     subregions: [
       { code: '4812', name: '창원시' },
       { code: '4817', name: '진주시' },
