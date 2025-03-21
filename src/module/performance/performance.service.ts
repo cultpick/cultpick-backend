@@ -28,6 +28,7 @@ export class PerformanceService {
     query: GetRecommendedPerformanceListQuery,
   ): Promise<PerformanceWithPrice[]> {
     const { page, size } = query;
+
     const { startDate, endDate } = getStartAndEndMonthDate();
 
     const performanceListResponse = await axios.get(`${OPEN_API_URL}/pblprfr`, {
@@ -56,6 +57,7 @@ export class PerformanceService {
     query: GetPersonalizedPerformanceListQuery,
   ): Promise<PerformanceWithPrice[]> {
     const { page, size } = query;
+
     const { startDate, endDate } = getStartAndEndMonthDate();
 
     const existingUser = await this.userService.getUserByUserId(user.id);
@@ -105,6 +107,7 @@ export class PerformanceService {
     query: GetOngoingPerformanceListQuery,
   ): Promise<PerformanceWithPrice[]> {
     const { page, size } = query;
+
     const { startDate, endDate } = getStartAndEndMonthDate();
 
     const performanceListResponse = await axios.get(`${OPEN_API_URL}/pblprfr`, {

@@ -29,8 +29,7 @@ export class PerformanceController {
   }
 
   @ApiOperation({
-    summary: '(개발중) 개인화 공연 목록 조회',
-    description: 'TODO: 내부 로직 구현',
+    summary: '개인화 공연 목록 조회',
   })
   @UseGuards(JwtGuard)
   @Get('/personalized')
