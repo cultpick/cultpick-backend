@@ -13,6 +13,7 @@ import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
 import { PrismaService } from 'prisma/prisma.service';
 import { UserService } from '../user/user.service';
+import { GetSearchedPerformanceListQuery } from './dto/request/get-performance-list.query ';
 
 const OPEN_API_URL = process.env.OPEN_API_URL;
 const SERVICE_KEY = process.env.SERVICE_KEY;
@@ -23,6 +24,69 @@ export class PerformanceService {
     private readonly prismaService: PrismaService,
     private readonly userService: UserService,
   ) {}
+
+  async getSearchedPerformanceList(
+    query: GetSearchedPerformanceListQuery,
+  ): Promise<{
+    totalCount: number;
+    performanceList: PerformanceWithPrice[];
+  }> {
+    const { page, size, q, genreCode, state, areaCode, subAreaCode } = query;
+
+    const { startDate, endDate } = getStartAndEndMonthDate();
+
+    const performanceListWithoutPaginationResponse = await axios.get(
+      `${OPEN_API_URL}/pblprfr`,
+      {
+        params: {
+          service: SERVICE_KEY,
+          stdate: startDate,
+          eddate: endDate,
+          cpage: 1,
+          rows: 100,
+          shprfnm: q,
+          shcate: genreCode,
+          prfstate: PerformanceStateCode[state],
+          signgucode: areaCode,
+          signgucodesub: subAreaCode,
+        },
+      },
+    );
+
+    const parsedPerformanceListWithoutPagination = (await xmlToJson(
+      performanceListWithoutPaginationResponse.data,
+    )) as Performance[];
+
+    const totalCount = parsedPerformanceListWithoutPagination.length;
+
+    const performanceListResponse = await axios.get(`${OPEN_API_URL}/pblprfr`, {
+      params: {
+        service: SERVICE_KEY,
+        stdate: startDate,
+        eddate: endDate,
+        cpage: page,
+        rows: size,
+        shprfnm: q,
+        shcate: genreCode,
+        prfstate: PerformanceStateCode[state],
+        signgucode: areaCode,
+        signgucodesub: subAreaCode,
+      },
+    });
+
+    const parsedPerformanceList = (await xmlToJson(
+      performanceListResponse.data,
+    )) as Performance[];
+
+    const performanceWithPriceList = await this.getPerformanceListWithDetail(
+      parsedPerformanceList,
+    );
+
+    return {
+      totalCount,
+      performanceList: performanceWithPriceList,
+    };
+  }
 
   async getRecommendedPerformanceList(
     query: GetRecommendedPerformanceListQuery,
@@ -139,11 +203,10 @@ export class PerformanceService {
 
     for (const performance of performanceList) {
       const performanceDetailResponse = await axios.get(
-        `${OPEN_API_URL}/pblprfr`,
+        `${OPEN_API_URL}/pblprfr/${performance.mt20id}`,
         {
           params: {
             service: SERVICE_KEY,
-            mt20id: performance.mt20id,
           },
         },
       );

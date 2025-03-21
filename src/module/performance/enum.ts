@@ -1,4 +1,4 @@
-export enum Genre {
+export enum PerformanceGenre {
   THEATER = 'THEATER', // 연극
   DANCE_WESTERN_KOREAN = 'DANCE_WESTERN_KOREAN', // 무용(서양/한국무용)
   DANCE_POPULAR = 'DANCE_POPULAR', // 대중무용
@@ -10,7 +10,7 @@ export enum Genre {
   MUSICAL = 'MUSICAL', // 뮤지컬
 }
 
-export enum State {
+export enum PerformanceState {
   COMING = 'COMING', // 공연예정
   ONGOING = 'ONGOING', // 공연중
   END = 'END', // 공연완료

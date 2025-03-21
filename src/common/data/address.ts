@@ -1,5 +1,6 @@
 export const addressData = [
   {
+    code: '11',
     name: '서울',
     subregions: [
       { code: '1111', name: '종로구' },
@@ -30,6 +31,7 @@ export const addressData = [
     ],
   },
   {
+    code: '26',
     name: '부산',
     subregions: [
       { code: '2611', name: '중구' },
@@ -51,6 +53,7 @@ export const addressData = [
     ],
   },
   {
+    code: '27',
     name: '대구',
     subregions: [
       { code: '2711', name: '중구' },
@@ -64,6 +67,7 @@ export const addressData = [
     ],
   },
   {
+    code: '28',
     name: '인천',
     subregions: [
       { code: '2811', name: '중구' },
@@ -79,6 +83,7 @@ export const addressData = [
     ],
   },
   {
+    code: '29',
     name: '광주',
     subregions: [
       { code: '2911', name: '동구' },
@@ -89,6 +94,7 @@ export const addressData = [
     ],
   },
   {
+    code: '30',
     name: '대전',
     subregions: [
       { code: '3011', name: '동구' },
@@ -99,6 +105,7 @@ export const addressData = [
     ],
   },
   {
+    code: '31',
     name: '울산',
     subregions: [
       { code: '3111', name: '중구' },
@@ -109,10 +116,12 @@ export const addressData = [
     ],
   },
   {
+    code: '36',
     name: '세종',
     subregions: [{ code: '3611', name: '세종특별자치시' }],
   },
   {
+    code: '41',
     name: '경기',
     subregions: [
       { code: '4111', name: '수원시' },
@@ -149,6 +158,7 @@ export const addressData = [
     ],
   },
   {
+    code: '51',
     name: '강원',
     subregions: [
       { code: '5111', name: '춘천시' },
@@ -172,6 +182,7 @@ export const addressData = [
     ],
   },
   {
+    code: '43',
     name: '충북',
     subregions: [
       { code: '4311', name: '청주시' },
@@ -188,6 +199,7 @@ export const addressData = [
     ],
   },
   {
+    code: '44',
     name: '충남',
     subregions: [
       { code: '4413', name: '천안시' },
@@ -208,6 +220,7 @@ export const addressData = [
     ],
   },
   {
+    code: '45',
     name: '전북',
     subregions: [
       { code: '4511', name: '전주시' },
@@ -227,6 +240,7 @@ export const addressData = [
     ],
   },
   {
+    code: '46',
     name: '전남',
     subregions: [
       { code: '4611', name: '목포시' },
@@ -254,6 +268,7 @@ export const addressData = [
     ],
   },
   {
+    code: '47',
     name: '경북',
     subregions: [
       { code: '4711', name: '포항시' },
@@ -282,6 +297,7 @@ export const addressData = [
     ],
   },
   {
+    code: '48',
     name: '경남',
     subregions: [
       { code: '4812', name: '창원시' },
@@ -305,6 +321,7 @@ export const addressData = [
     ],
   },
   {
+    code: '50',
     name: '제주',
     subregions: [
       { code: '5011', name: '제주시' },

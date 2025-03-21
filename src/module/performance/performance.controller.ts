@@ -8,12 +8,27 @@ import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
 import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
+import { GetSearchedPerformanceListQuery } from './dto/request/get-performance-list.query ';
+import { GetSearchedPerformanceResponse } from './dto/response/get-searched-performance-list.response';
 
 @ApiTags('Performance (공연)')
 @ApiBearerAuth('access-token')
 @Controller('/performance')
 export class PerformanceController {
   constructor(private readonly performanceService: PerformanceService) {}
+
+  @ApiOperation({
+    summary: '공연 목록 검색 조회',
+  })
+  @Get('/')
+  async getSearchedPerformanceList(
+    @Query() query: GetSearchedPerformanceListQuery,
+  ): Promise<GetSearchedPerformanceResponse> {
+    const { totalCount, performanceList } =
+      await this.performanceService.getSearchedPerformanceList(query);
+
+    return new GetSearchedPerformanceResponse(totalCount, performanceList);
+  }
 
   @ApiOperation({
     summary: '이달의 추천 공연 목록 조회',

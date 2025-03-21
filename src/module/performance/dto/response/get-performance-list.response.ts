@@ -39,6 +39,7 @@ export class GetPerformanceResponse {
   posterUrl: string;
 
   constructor(performance: PerformanceWithPrice) {
+    console.log(performance);
     this.id = performance.mt20id;
     this.name = performance.prfnm;
     this.startDate = dayjs(performance.prfpdfrom, 'DD.MM.YYYY').toDate();
