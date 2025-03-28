@@ -4,7 +4,7 @@ import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommende
 import { xmlToJson } from 'src/common/util/xml-to-json';
 import {
   Performance,
-  PerformanceWithPrice,
+  PerformanceDetail,
 } from 'src/common/open-api/schema/performance';
 import { getStartAndEndMonthDate } from 'src/common/util/dayjs';
 import { GetOngoingPerformanceListQuery } from './dto/request/get-ongoing-performance-list.query';
@@ -29,7 +29,7 @@ export class PerformanceService {
     query: GetSearchedPerformanceListQuery,
   ): Promise<{
     totalCount: number;
-    performanceList: PerformanceWithPrice[];
+    performanceList: PerformanceDetail[];
   }> {
     const { page, size, q, genreCode, state, areaCode, subAreaCode } = query;
 
@@ -90,7 +90,7 @@ export class PerformanceService {
 
   async getRecommendedPerformanceList(
     query: GetRecommendedPerformanceListQuery,
-  ): Promise<PerformanceWithPrice[]> {
+  ): Promise<PerformanceDetail[]> {
     const { page, size } = query;
 
     const { startDate, endDate } = getStartAndEndMonthDate();
@@ -119,7 +119,7 @@ export class PerformanceService {
   async getPersonalizedPerformanceList(
     user: UserInfo,
     query: GetPersonalizedPerformanceListQuery,
-  ): Promise<PerformanceWithPrice[]> {
+  ): Promise<PerformanceDetail[]> {
     const { page, size } = query;
 
     const { startDate, endDate } = getStartAndEndMonthDate();
@@ -169,7 +169,7 @@ export class PerformanceService {
 
   async getOngoingPerformanceList(
     query: GetOngoingPerformanceListQuery,
-  ): Promise<PerformanceWithPrice[]> {
+  ): Promise<PerformanceDetail[]> {
     const { page, size } = query;
 
     const { startDate, endDate } = getStartAndEndMonthDate();
@@ -196,10 +196,29 @@ export class PerformanceService {
     return performanceWithPriceList;
   }
 
-  async getPerformanceListWithDetail(
+  async getPerformanceDetail(
+    performanceId: string,
+  ): Promise<PerformanceDetail> {
+    const performanceDetailResponse = await axios.get(
+      `${OPEN_API_URL}/pblprfr/${performanceId}`,
+      {
+        params: {
+          service: SERVICE_KEY,
+        },
+      },
+    );
+
+    const parsedPerformanceDetail = (await xmlToJson(
+      performanceDetailResponse.data,
+    )) as PerformanceDetail;
+
+    return parsedPerformanceDetail;
+  }
+
+  private async getPerformanceListWithDetail(
     performanceList: Performance[],
-  ): Promise<PerformanceWithPrice[]> {
-    const performanceWithPriceList: PerformanceWithPrice[] = [];
+  ): Promise<PerformanceDetail[]> {
+    const performanceWithPriceList: PerformanceDetail[] = [];
 
     for (const performance of performanceList) {
       const performanceDetailResponse = await axios.get(
@@ -213,7 +232,7 @@ export class PerformanceService {
 
       const parsedPerformanceDetail = (await xmlToJson(
         performanceDetailResponse.data,
-      )) as PerformanceWithPrice[];
+      )) as PerformanceDetail[];
 
       performanceWithPriceList.push(parsedPerformanceDetail[0]);
     }
