@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PerformanceWithPrice } from 'src/common/open-api/schema/performance';
-import * as dayjs from 'dayjs';
+import { PerformanceDetail } from 'src/common/open-api/schema/performance';
+import dayjs from 'dayjs';
 
 export class GetPerformanceResponse {
   @ApiProperty({
@@ -36,17 +36,16 @@ export class GetPerformanceResponse {
   @ApiProperty({
     description: '공연 포스터 경로',
   })
-  posterUrl: string;
+  posterImageUrl: string;
 
-  constructor(performance: PerformanceWithPrice) {
-    console.log(performance);
+  constructor(performance: PerformanceDetail) {
     this.id = performance.mt20id;
     this.name = performance.prfnm;
     this.startDate = dayjs(performance.prfpdfrom, 'DD.MM.YYYY').toDate();
     this.endDate = dayjs(performance.prfpdto, 'DD.MM.YYYY').toDate();
     this.area = performance.area;
     this.price = performance.pcseguidance;
-    this.posterUrl = performance.poster;
+    this.posterImageUrl = performance.poster;
   }
 }
 
@@ -61,7 +60,7 @@ export class GetPerformanceListResponse {
   })
   performanceList: GetPerformanceResponse[];
 
-  constructor(performanceList: PerformanceWithPrice[]) {
+  constructor(performanceList: PerformanceDetail[]) {
     this.count = performanceList.length;
     this.performanceList = performanceList.map((performance) => {
       return new GetPerformanceResponse(performance);

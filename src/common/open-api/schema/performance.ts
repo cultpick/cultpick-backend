@@ -11,6 +11,8 @@ export type Performance = {
   area: string;
 };
 
-export type PerformanceWithPrice = Performance & {
+export type PerformanceDetail = Performance & {
   pcseguidance: string; //티켓가격
+  entrpsnmH: string; //주최
+  styurls: Record<string, { styurl: string }>; // 소개 이미지 URL 목록
 };

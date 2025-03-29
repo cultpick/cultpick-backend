@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PerformanceService } from './performance.service';
 import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
@@ -10,6 +10,7 @@ import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personali
 import { GetPerformanceListResponse } from './dto/response/get-performance-list.response';
 import { GetSearchedPerformanceListQuery } from './dto/request/get-performance-list.query ';
 import { GetSearchedPerformanceResponse } from './dto/response/get-searched-performance-list.response';
+import { GetPerformanceDetailResponse } from './dto/response/get-performance-detail.response';
 
 @ApiTags('Performance (공연)')
 @ApiBearerAuth('access-token')
@@ -69,5 +70,18 @@ export class PerformanceController {
       await this.performanceService.getOngoingPerformanceList(query);
 
     return new GetPerformanceListResponse(performanceList);
+  }
+
+  @ApiOperation({
+    summary: '공연 상세 조회',
+  })
+  @Get('/:performanceId')
+  async getPerformanceDetail(
+    @Param('performanceId') performanceId: string,
+  ): Promise<GetPerformanceDetailResponse> {
+    const performanceDetail =
+      await this.performanceService.getPerformanceDetail(performanceId);
+
+    return new GetPerformanceDetailResponse(performanceDetail);
   }
 }

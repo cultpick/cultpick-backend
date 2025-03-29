@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PerformanceWithPrice } from 'src/common/open-api/schema/performance';
+import { PerformanceDetail } from 'src/common/open-api/schema/performance';
 import { GetPerformanceListResponse } from './get-performance-list.response';
 
 export class GetSearchedPerformanceResponse extends GetPerformanceListResponse {
@@ -8,7 +8,7 @@ export class GetSearchedPerformanceResponse extends GetPerformanceListResponse {
   })
   totalCount: number;
 
-  constructor(totalCount: number, performanceList: PerformanceWithPrice[]) {
+  constructor(totalCount: number, performanceList: PerformanceDetail[]) {
     super(performanceList);
     this.totalCount = totalCount;
   }
