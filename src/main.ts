@@ -30,8 +30,10 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(2020);
+  await app.listen(process.env.PORT);
 
-  console.log(`🚀 Server ready at http://localhost:2020`);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT}`,
+  );
 }
 bootstrap();
