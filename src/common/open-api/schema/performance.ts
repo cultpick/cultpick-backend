@@ -1,3 +1,10 @@
+type Relate = {
+  relatenm: string;
+  relateurl: string;
+};
+
+type Relates = Record<string, Relate | Relate[]>;
+
 export type Performance = {
   mt20id: string;
   prfnm: string;
@@ -12,7 +19,8 @@ export type Performance = {
 };
 
 export type PerformanceDetail = Performance & {
-  pcseguidance: string; //티켓가격
-  entrpsnmH: string; //주최
-  styurls: Record<string, { styurl: string }>; // 소개 이미지 URL 목록
+  pcseguidance: string; // 티켓가격
+  entrpsnmH: string; // 주최
+  styurls: Record<string, string>; // 소개 이미지 URL 목록
+  relates: Relates; // 예매처 목록
 };

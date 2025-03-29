@@ -2,6 +2,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import dayjs from 'dayjs';
 import { PerformanceDetail } from 'src/common/open-api/schema/performance';
 
+export class TicketResponse {
+  @ApiProperty({
+    description: '예매처 이름',
+  })
+  name: string;
+
+  @ApiProperty({
+    description: '예매처 URL',
+  })
+  url: string;
+}
+
 export class GetPerformanceDetailResponse {
   @ApiProperty({
     description: '공연 ID',
@@ -27,6 +39,11 @@ export class GetPerformanceDetailResponse {
     description: '공연 지역',
   })
   area: string;
+
+  @ApiProperty({
+    description: '예매처 목록',
+  })
+  ticketList: TicketResponse[];
 
   @ApiProperty({
     description: '공연 시작일',
@@ -61,7 +78,7 @@ export class GetPerformanceDetailResponse {
   @ApiProperty({
     description: '공연 소개 이미지 URL',
   })
-  introImageUrls: object;
+  introImageUrlList: string[];
 
   constructor(performance: PerformanceDetail) {
     console.log(performance);
@@ -69,17 +86,30 @@ export class GetPerformanceDetailResponse {
     this.name = performance.prfnm;
     this.genre = performance.genrenm;
     this.state = performance.prfstate;
+    this.area = performance.area;
+    const ticketList = [];
+    for (const entry of Object.values(performance.relates)) {
+      if (Array.isArray(entry)) {
+        for (const item of entry) {
+          ticketList.push({
+            name: item.relatenm,
+            url: item.relateurl,
+          });
+        }
+      } else {
+        ticketList.push({
+          name: entry.relatenm,
+          url: entry.relateurl,
+        });
+      }
+    }
+    this.ticketList = ticketList;
     this.startDate = dayjs(performance.prfpdfrom, 'DD.MM.YYYY').toDate();
     this.endDate = dayjs(performance.prfpdto, 'DD.MM.YYYY').toDate();
-    this.area = performance.area;
     this.price = performance.pcseguidance;
     this.address = performance.fcltynm;
     this.host = performance.entrpsnmH;
     this.posterImageUrl = performance.poster;
-    const introImageUrlList = [];
-    for (const introImage of Object.values(performance.styurls)) {
-      introImageUrlList.push(introImage);
-    }
-    this.introImageUrls = introImageUrlList;
+    this.introImageUrlList = Object.values(performance.styurls);
   }
 }
