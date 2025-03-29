@@ -30,8 +30,8 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(3000);
+  await app.listen(2020);
 
-  console.log(`Application is running on: http://localhost:3000`);
+  console.log(`🚀 Server ready at http://localhost:2020`);
 }
 bootstrap();
