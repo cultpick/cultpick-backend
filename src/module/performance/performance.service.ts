@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
-import { xmlToJson } from 'src/common/util/xml-to-json';
+import { xmlToJson, xmlToJsonList } from 'src/common/util/xml-to-json';
 import {
   Performance,
   PerformanceDetail,
@@ -230,7 +230,7 @@ export class PerformanceService {
         },
       );
 
-      const parsedPerformanceDetail = (await xmlToJson(
+      const parsedPerformanceDetail = (await xmlToJsonList(
         performanceDetailResponse.data,
       )) as PerformanceDetail[];
 
