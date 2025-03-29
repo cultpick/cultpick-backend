@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import dayjs from 'dayjs';
 import { PerformanceDetail } from 'src/common/open-api/schema/performance';
-import { PerformanceState } from '../../enum';
 
 export class GetPerformanceDetailResponse {
   @ApiProperty({
@@ -22,7 +21,7 @@ export class GetPerformanceDetailResponse {
   @ApiProperty({
     description: '공연 진행 상태',
   })
-  state: PerformanceState;
+  state: string;
 
   @ApiProperty({
     description: '공연 지역',
@@ -65,10 +64,11 @@ export class GetPerformanceDetailResponse {
   introImageUrls: object;
 
   constructor(performance: PerformanceDetail) {
+    console.log(performance);
     this.id = performance.mt20id;
     this.name = performance.prfnm;
     this.genre = performance.genrenm;
-    this.state = PerformanceState[performance.prfstate];
+    this.state = performance.prfstate;
     this.startDate = dayjs(performance.prfpdfrom, 'DD.MM.YYYY').toDate();
     this.endDate = dayjs(performance.prfpdto, 'DD.MM.YYYY').toDate();
     this.area = performance.area;
