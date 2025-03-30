@@ -7,17 +7,17 @@ import { UserInfo } from 'src/auth/type';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUser(user: UserInfo) {
+  async getUserDetail(userInfo: UserInfo) {
     const existingUser = await this.prismaService.user.findUnique({
       where: {
-        id: user.id,
+        id: userInfo.id,
       },
     });
 
     const favoriteCategoryList =
       await this.prismaService.userToCategory.findMany({
         where: {
-          userId: user.id,
+          userId: userInfo.id,
         },
       });
 
