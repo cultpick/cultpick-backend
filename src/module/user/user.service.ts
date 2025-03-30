@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import { UserInfo } from 'src/auth/type';
+import { UpdateUserDetailRequest } from './dto/request/update-user-detail.request';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,27 @@ export class UserService {
       ...existingUser,
       favoriteCategoryList,
     };
+  }
+
+  async updateUserDetail(
+    userInfo: UserInfo,
+    body: UpdateUserDetailRequest,
+  ): Promise<void> {
+    const { name, gender, birthDate, addressCode } = body;
+
+    await this.getUserByUserId(userInfo.id);
+
+    await this.prismaService.user.update({
+      where: {
+        id: userInfo.id,
+      },
+      data: {
+        name,
+        gender,
+        birth: birthDate,
+        addressCode,
+      },
+    });
   }
 
   async getUserByUserId(userId: number): Promise<User> {

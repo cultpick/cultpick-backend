@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { SignUpRequest } from './dto/request/sign-up.request';
 import { PrismaService } from 'prisma/prisma.service';
-import { User } from '@prisma/client';
 import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
@@ -56,7 +55,7 @@ export class AuthService {
     return accessToken;
   }
 
-  async signUp(body: SignUpRequest): Promise<User> {
+  async signUp(body: SignUpRequest): Promise<void> {
     const {
       email,
       password,
@@ -79,32 +78,28 @@ export class AuthService {
       );
     }
 
-    const createdUser = await this.prismaService.$transaction(
-      async (prisma) => {
-        const user = await prisma.user.create({
-          data: {
-            email,
-            password,
-            name,
-            birth,
-            gender,
-            addressCode,
-          },
+    await this.prismaService.$transaction(async (prisma) => {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password,
+          name,
+          birth,
+          gender,
+          addressCode,
+        },
+      });
+
+      if (favoriteCategoryCodes?.length) {
+        await prisma.userToCategory.createMany({
+          data: favoriteCategoryCodes.map((categoryCode) => ({
+            userId: user.id,
+            categoryCode,
+          })),
         });
+      }
 
-        if (favoriteCategoryCodes?.length) {
-          await prisma.userToCategory.createMany({
-            data: favoriteCategoryCodes.map((categoryCode) => ({
-              userId: user.id,
-              categoryCode,
-            })),
-          });
-        }
-
-        return user;
-      },
-    );
-
-    return createdUser;
+      return user;
+    });
   }
 }
