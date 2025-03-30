@@ -8,12 +8,14 @@ import { PrismaService } from 'prisma/prisma.service';
 import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
+import { MailService } from 'src/lib/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async checkEmail(body: CheckEmailRequest): Promise<void> {
@@ -30,6 +32,11 @@ export class AuthService {
         `이미 사용 중인 이메일입니다. (email: ${email})`,
       );
     }
+  }
+
+  async sendVerificationCodeEmail(): Promise<void> {
+    const code = '1119';
+    await this.mailService.sendMail(code);
   }
 
   async signIn(body: SignInRequest): Promise<string> {

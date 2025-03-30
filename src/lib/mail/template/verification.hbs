@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>이메일 인증</title>
+  <style>
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      padding: 40px 20px;
+    }
+    .logo {
+      font-size: 48px;
+      font-weight: bold;
+      color: #6d28d9;
+      margin-bottom: 10px;
+    }
+    .logo span {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .divider {
+      width: 80px;
+      height: 2px;
+      background-color: #a78bfa;
+      margin: 20px auto;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+    .message {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+    .code-box {
+      background-color: white;
+      padding: 30px;
+      margin: 0 auto;
+      display: inline-block;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .code-label {
+      color: #6d28d9;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .code {
+      font-size: 32px;
+      font-weight: bold;
+      color: #6d28d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <span style="font-style: italic;">Cult</span><span>🖱ick</span>
+    </div>
+    <div class="divider"></div>
+    <div class="title">이메일 인증 번호 안내</div>
+    <div class="message">
+      안녕하세요. CultPick입니다.<br>
+      아래 인증번호를 입력하여 이메일 인증을 완료해주세요.
+    </div>
+    <div class="code-box">
+      <div class="code-label">확인 코드</div>
+      <div class="code">{{code}}</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpRequest } from './dto/request/sign-up.request';
@@ -18,6 +18,16 @@ export class AuthController {
   @Post('/check-email')
   async checkEmail(@Body() body: CheckEmailRequest): Promise<SuccessResponse> {
     await this.authService.checkEmail(body);
+
+    return new SuccessResponse();
+  }
+
+  @ApiOperation({
+    summary: '인증번호 이메일 발송',
+  })
+  @Get('/email')
+  async sendVerificationCodeEmail(): Promise<SuccessResponse> {
+    await this.authService.sendVerificationCodeEmail();
 
     return new SuccessResponse();
   }

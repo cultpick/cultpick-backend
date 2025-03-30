@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from 'prisma/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
+import { MailModule } from 'src/lib/mail/mail.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: 'culpick-secret',
       signOptions: { expiresIn: '1d' },
     }),
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
