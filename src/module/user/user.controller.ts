@@ -28,7 +28,7 @@ export class UserController {
   }
 
   @ApiOperation({
-    summary: '유저 상세 조회',
+    summary: '유저 상세 수정',
   })
   @Put('/')
   async updateUserDetail(
