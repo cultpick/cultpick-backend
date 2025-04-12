@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Deploy Workflow
-        uses: peter-evans/workflow-dispatch@v1.2.0
+        uses: peter-evans/workflow-dispatch@v2
         with:
           workflow: Deploy to cloudtype # Must match the `name:` in deploy-main.yml
           ref: main
