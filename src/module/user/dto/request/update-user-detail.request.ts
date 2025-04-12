@@ -1,26 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Gender } from '../../enum';
-import dayjs from 'dayjs';
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/swagger';
+import { SignUpRequest } from 'src/auth/dto/request/sign-up.request';
 
-export class UpdateUserDetailRequest {
-  @ApiProperty({ example: '홍길통' })
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @ApiProperty({ example: Gender.MALE })
-  @IsNotEmpty()
-  @IsString()
-  gender: Gender;
-
-  @ApiProperty({ example: dayjs().toISOString() })
-  @IsNotEmpty()
-  @IsDate()
-  birthDate: Date;
-
-  @ApiProperty({ example: '5111' })
-  @IsNotEmpty()
-  @IsString()
-  addressCode: string;
-}
+export class UpdateUserDetailRequest extends OmitType(SignUpRequest, [
+  'email',
+  'password',
+] as const) {}

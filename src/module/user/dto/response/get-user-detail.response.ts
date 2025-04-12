@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 import { Gender } from '../../enum';
 import dayjs from 'dayjs';
+import { UserWithUTCs } from '../../type';
 
 export class GetUserDetailResponse {
   @ApiProperty({
@@ -40,12 +40,21 @@ export class GetUserDetailResponse {
   })
   addressCode: string;
 
-  constructor(user: User) {
+  @ApiProperty({
+    description: '관심 카테고리 ID 리스트',
+    example: ['AAAA', 'BBBC'],
+  })
+  favoriteCategoryCodes: string[];
+
+  constructor(user: UserWithUTCs) {
     this.id = user.id;
     this.email = user.email;
     this.name = user.name;
     this.gender = user.gender as Gender;
-    this.birthDate = user.birth;
+    this.birthDate = user.birthDate;
     this.addressCode = user.addressCode;
+    this.favoriteCategoryCodes = user.userToCategory.map(
+      (userToCategory) => userToCategory.categoryCode,
+    );
   }
 }

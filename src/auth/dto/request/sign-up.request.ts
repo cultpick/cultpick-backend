@@ -26,7 +26,7 @@ export class SignUpRequest extends SignInRequest {
   })
   @IsNotEmpty()
   @IsDate()
-  birth: Date;
+  birthDate: Date;
 
   @ApiProperty({
     description: '주소(구군) 코드',

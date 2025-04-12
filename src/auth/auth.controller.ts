@@ -37,7 +37,6 @@ export class AuthController {
 
   @ApiOperation({
     summary: '회원가입',
-    description: 'TODO: 이메일 인증 기능',
   })
   @Post('/sign-up')
   async signUp(@Body() body: SignUpRequest): Promise<SuccessResponse> {

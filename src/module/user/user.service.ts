@@ -3,49 +3,64 @@ import { User } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 import { UserInfo } from 'src/auth/type';
 import { UpdateUserDetailRequest } from './dto/request/update-user-detail.request';
+import { UserWithUTCs } from './type';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserDetail(userInfo: UserInfo) {
+  async getUserDetail(userInfo: UserInfo): Promise<UserWithUTCs> {
     const existingUser = await this.prismaService.user.findUnique({
       where: {
         id: userInfo.id,
       },
+      include: {
+        userToCategory: true,
+      },
     });
 
-    const favoriteCategoryList =
-      await this.prismaService.userToCategory.findMany({
-        where: {
-          userId: userInfo.id,
-        },
-      });
-
-    return {
-      ...existingUser,
-      favoriteCategoryList,
-    };
+    return existingUser;
   }
 
   async updateUserDetail(
     userInfo: UserInfo,
     body: UpdateUserDetailRequest,
   ): Promise<void> {
-    const { name, gender, birthDate, addressCode } = body;
+    const { name, gender, birthDate, addressCode, favoriteCategoryCodes } =
+      body;
 
     await this.getUserByUserId(userInfo.id);
 
-    await this.prismaService.user.update({
-      where: {
-        id: userInfo.id,
-      },
-      data: {
-        name,
-        gender,
-        birth: birthDate,
-        addressCode,
-      },
+    await this.prismaService.$transaction(async (tx) => {
+      await tx.user.update({
+        where: {
+          id: userInfo.id,
+        },
+        data: {
+          name,
+          gender,
+          birthDate,
+          addressCode,
+        },
+      });
+
+      await tx.userToCategory.deleteMany({
+        where: {
+          userId: userInfo.id,
+        },
+      });
+
+      const createCategoryPromises = favoriteCategoryCodes.map(
+        (favoriteCategoryCode) =>
+          tx.userToCategory.create({
+            data: {
+              userId: userInfo.id,
+              categoryCode: favoriteCategoryCode,
+            },
+          }),
+      );
+
+      await Promise.all(createCategoryPromises);
     });
   }
 
