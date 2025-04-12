@@ -9,8 +9,9 @@ import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { MailService } from 'src/lib/mail/mail.service';
-import { SendVerificationCodeEmailQuery } from './dto/query/send-verification-code-email.query';
+import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
 import { generateRandomCode } from 'src/common/util/random';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class AuthService {
@@ -34,16 +35,6 @@ export class AuthService {
         `이미 사용 중인 이메일입니다. (email: ${email})`,
       );
     }
-  }
-
-  async sendVerificationCodeMail(
-    query: SendVerificationCodeEmailQuery,
-  ): Promise<void> {
-    const { email } = query;
-
-    const code = generateRandomCode();
-
-    await this.mailService.sendVerificationCodeMail(email, code);
   }
 
   async signIn(body: SignInRequest): Promise<string> {
@@ -116,4 +107,52 @@ export class AuthService {
       return user;
     });
   }
+
+  async sendVerificationCodeMail(
+    body: SendVerificationCodeMailRequest,
+  ): Promise<void> {
+    const { email } = body;
+
+    const code = generateRandomCode();
+
+    const existingVerificationCode =
+      await this.prismaService.verificationCode.findFirst({
+        where: {
+          email,
+        },
+      });
+
+    // 1분 후에 다시 시도
+    if (
+      existingVerificationCode &&
+      existingVerificationCode.updatedAt >
+        dayjs().subtract(1, 'minutes').toDate()
+    ) {
+      throw new BadRequestException(
+        `1분 후에 다시 시도해주세요. (email: ${email})`,
+      );
+    }
+
+    if (existingVerificationCode) {
+      await this.prismaService.verificationCode.update({
+        where: {
+          email,
+        },
+        data: {
+          code,
+        },
+      });
+    } else {
+      await this.prismaService.verificationCode.create({
+        data: {
+          email,
+          code,
+        },
+      });
+    }
+
+    await this.mailService.sendVerificationCodeMail(email, code);
+  }
+
+  async validateVerificationCode(): Promise<void> {}
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpRequest } from './dto/request/sign-up.request';
@@ -6,7 +6,7 @@ import { SignInRequest } from './dto/request/sign-in.request';
 import { SignInResponse } from './dto/response/sign-in.response';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { SuccessResponse } from 'src/common/dto/response/success.response';
-import { SendVerificationCodeEmailQuery } from './dto/query/send-verification-code-email.query';
+import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
 
 @ApiTags('Auth (인증)')
 @Controller('/auth')
@@ -19,18 +19,6 @@ export class AuthController {
   @Post('/check-email')
   async checkEmail(@Body() body: CheckEmailRequest): Promise<SuccessResponse> {
     await this.authService.checkEmail(body);
-
-    return new SuccessResponse();
-  }
-
-  @ApiOperation({
-    summary: '인증번호 이메일 발송',
-  })
-  @Get('/email')
-  async sendVerificationCodeMail(
-    @Query() query: SendVerificationCodeEmailQuery,
-  ): Promise<SuccessResponse> {
-    await this.authService.sendVerificationCodeMail(query);
 
     return new SuccessResponse();
   }
@@ -54,6 +42,26 @@ export class AuthController {
   async signUp(@Body() body: SignUpRequest): Promise<SuccessResponse> {
     await this.authService.signUp(body);
 
+    return new SuccessResponse();
+  }
+
+  @ApiOperation({
+    summary: '인증번호 이메일 발송',
+  })
+  @Post('/verification')
+  async sendVerificationCodeMail(
+    @Body() body: SendVerificationCodeMailRequest,
+  ): Promise<SuccessResponse> {
+    await this.authService.sendVerificationCodeMail(body);
+
+    return new SuccessResponse();
+  }
+
+  @ApiOperation({
+    summary: '인증번호 검증',
+  })
+  @Post('/verification/validate')
+  async validateVerificationCode(): Promise<SuccessResponse> {
     return new SuccessResponse();
   }
 }

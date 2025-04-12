@@ -43,6 +43,14 @@ model Pick {
   @@id([userId, performanceId])
 }
 
+model VerificationCode {
+  email String @id @db.VarChar(255)
+  code  String @db.VarChar(6)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Gender {
   MALE
   FEMALE
