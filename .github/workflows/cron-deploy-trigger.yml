@@ -2,7 +2,8 @@ name: Trigger Cloudtype Deploy on Schedule
 
 on:
   schedule:
-    - cron: '*/1 * * * *' # Every 1 minutes (for testing)
+    - cron: '*/5 * * * *' # Every 5 minutes (reliable minimum)
+  workflow_dispatch:
 
 jobs:
   trigger-deploy:
@@ -11,5 +12,5 @@ jobs:
       - name: Trigger Deploy Workflow
         uses: peter-evans/workflow-dispatch@v1.2.0
         with:
-          workflow: Deploy to cloudtype
+          workflow: Deploy to cloudtype # Must match the `name:` in deploy-main.yml
           ref: main
