@@ -2,7 +2,7 @@ name: Trigger Cloudtype Deploy on Schedule
 
 on:
   schedule:
-    - cron: '0 5 * * *' # every day at 5:00 AM UTC
+    - cron: '*/5 * * * *' # every day at 5:00 AM UTC
 
 jobs:
   trigger-deploy:
