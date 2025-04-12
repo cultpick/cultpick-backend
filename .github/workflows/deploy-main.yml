@@ -1,4 +1,5 @@
-name: Deploy to cloudtype
+name: CloudType Deployment
+
 on:
   schedule:
     - cron: '*/5 * * * *' # Every 5 minutes
@@ -6,6 +7,7 @@ on:
     branches:
       - main
   workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
