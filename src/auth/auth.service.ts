@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { MailService } from 'src/lib/mail/mail.service';
 import { SendVerificationCodeEmailQuery } from './dto/query/send-verification-code-email.query';
+import { generateRandomCode } from 'src/common/util/random';
 
 @Injectable()
 export class AuthService {
@@ -35,13 +36,14 @@ export class AuthService {
     }
   }
 
-  async sendVerificationCodeEmail(
+  async sendVerificationCodeMail(
     query: SendVerificationCodeEmailQuery,
   ): Promise<void> {
     const { email } = query;
 
-    const code = '1119';
-    await this.mailService.sendMail(email, code);
+    const code = generateRandomCode();
+
+    await this.mailService.sendVerificationCodeMail(email, code);
   }
 
   async signIn(body: SignInRequest): Promise<string> {

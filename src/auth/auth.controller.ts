@@ -27,10 +27,10 @@ export class AuthController {
     summary: '인증번호 이메일 발송',
   })
   @Get('/email')
-  async sendVerificationCodeEmail(
+  async sendVerificationCodeMail(
     @Query() query: SendVerificationCodeEmailQuery,
   ): Promise<SuccessResponse> {
-    await this.authService.sendVerificationCodeEmail(query);
+    await this.authService.sendVerificationCodeMail(query);
 
     return new SuccessResponse();
   }
