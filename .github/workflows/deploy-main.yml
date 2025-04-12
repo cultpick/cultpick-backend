@@ -2,7 +2,7 @@ name: CloudType Deployment
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # Every 5 minutes
+    - cron: '0 0 * * *' # 00:00 Every day
   push:
     branches:
       - main
