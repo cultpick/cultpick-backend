@@ -9,7 +9,7 @@ import { MailModule } from 'src/lib/mail/mail.module';
   imports: [
     JwtModule.register({
       global: true,
-      secret: 'culpick-secret',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
     MailModule,
