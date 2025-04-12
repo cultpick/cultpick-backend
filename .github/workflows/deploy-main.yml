@@ -14,6 +14,8 @@ jobs:
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
+          repo: cultpick/cultpick-backend
+          scope: cultpick
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
