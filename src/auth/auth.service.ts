@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Body,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { MailService } from 'src/lib/mail/mail.service';
 import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
 import { generateRandomCode } from 'src/common/util/random';
 import dayjs from 'dayjs';
+import { ValidateVerificationCodeRequest } from './dto/request/validate-verification-code.request';
 
 @Injectable()
 export class AuthService {
@@ -154,5 +156,38 @@ export class AuthService {
     await this.mailService.sendVerificationCodeMail(email, code);
   }
 
-  async validateVerificationCode(): Promise<void> {}
+  async validateVerificationCode(
+    @Body() body: ValidateVerificationCodeRequest,
+  ): Promise<void> {
+    const { email, code } = body;
+
+    const verificationCode =
+      await this.prismaService.verificationCode.findFirst({
+        where: {
+          email,
+        },
+      });
+
+    // 인증번호가 없거나, 발송된지 5분이 지남
+    if (
+      !verificationCode ||
+      dayjs().isAfter(dayjs(verificationCode.updatedAt).add(5, 'minutes'))
+    ) {
+      throw new NotFoundException(
+        `해당 이메일로 발송된 인증번호가 없습니다. (email: ${email})`,
+      );
+    }
+
+    if (verificationCode.code !== code) {
+      throw new BadRequestException(
+        `인증번호가 일치하지 않습니다. (email: ${email})`,
+      );
+    }
+
+    await this.prismaService.verificationCode.delete({
+      where: {
+        email,
+      },
+    });
+  }
 }

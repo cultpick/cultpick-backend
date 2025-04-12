@@ -7,6 +7,7 @@ import { SignInResponse } from './dto/response/sign-in.response';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { SuccessResponse } from 'src/common/dto/response/success.response';
 import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
+import { ValidateVerificationCodeRequest } from './dto/request/validate-verification-code.request';
 
 @ApiTags('Auth (인증)')
 @Controller('/auth')
@@ -61,7 +62,11 @@ export class AuthController {
     summary: '인증번호 검증',
   })
   @Post('/verification/validate')
-  async validateVerificationCode(): Promise<SuccessResponse> {
+  async validateVerificationCode(
+    @Body() body: ValidateVerificationCodeRequest,
+  ): Promise<SuccessResponse> {
+    await this.authService.validateVerificationCode(body);
+
     return new SuccessResponse();
   }
 }
