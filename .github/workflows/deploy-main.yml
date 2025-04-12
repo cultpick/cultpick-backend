@@ -9,17 +9,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Connect deploy key
-      #   uses: cloudtype-github-actions/connect@v1
-      #   with:
-      #     token: ${{ secrets.CLOUDTYPE_TOKEN }}
-      #     ghtoken: ${{ secrets.GHP_TOKEN }}
-      #     project: aptheparker/aptheparker
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
-          ghtoken: ${{ secrets.GHP_TOKEN }} # 🔥 Add this line
+          ghtoken: ${{ secrets.GHP_TOKEN }}
           project: aptheparker/aptheparker
           stage: main
           yaml: >
@@ -48,8 +42,8 @@ jobs:
               start: pnpm start:prod
               install: pnpm i
               buildenv: []
-          context:
-            git:
-              url: https://github.com/${{ github.repository }}.git
-              ref: ${{ github.ref }}
-            preset: nest.js
+            context:
+              git:
+                url: https://github.com/${{ github.repository }}.git
+                ref: ${{ github.ref }}
+              preset: nest.js
