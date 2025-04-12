@@ -41,6 +41,7 @@ pnpm start:debug
 ┌── .github/
 │   └── workflows/
 │       └── deploy-main.yml
+├── docs/
 ├── prisma/
 │   ├── schema.prisma
 ├── src/
