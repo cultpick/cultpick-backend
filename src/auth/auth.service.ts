@@ -9,6 +9,7 @@ import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { MailService } from 'src/lib/mail/mail.service';
+import { SendVerificationCodeEmailQuery } from './dto/query/send-verification-code-email.query';
 
 @Injectable()
 export class AuthService {
@@ -34,9 +35,13 @@ export class AuthService {
     }
   }
 
-  async sendVerificationCodeEmail(): Promise<void> {
+  async sendVerificationCodeEmail(
+    query: SendVerificationCodeEmailQuery,
+  ): Promise<void> {
+    const { email } = query;
+
     const code = '1119';
-    await this.mailService.sendMail(code);
+    await this.mailService.sendMail(email, code);
   }
 
   async signIn(body: SignInRequest): Promise<string> {

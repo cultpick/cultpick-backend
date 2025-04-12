@@ -5,11 +5,10 @@ import { ConflictException, Injectable } from '@nestjs/common';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendMail(code: string): Promise<boolean> {
+  async sendMail(email: string, code: string): Promise<boolean> {
     await this.mailerService
       .sendMail({
-        from: process.env.SMTP_FROM,
-        to: 'aptheparker@gmail.com',
+        to: email,
         subject: 'CultPick 이메일 인증 안내드립니다',
         template: './verification.hbs',
         context: {

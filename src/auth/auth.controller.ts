@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpRequest } from './dto/request/sign-up.request';
@@ -6,6 +6,7 @@ import { SignInRequest } from './dto/request/sign-in.request';
 import { SignInResponse } from './dto/response/sign-in.response';
 import { CheckEmailRequest } from './dto/request/check-email.request';
 import { SuccessResponse } from 'src/common/dto/response/success.response';
+import { SendVerificationCodeEmailQuery } from './dto/query/send-verification-code-email.query';
 
 @ApiTags('Auth (인증)')
 @Controller('/auth')
@@ -26,8 +27,10 @@ export class AuthController {
     summary: '인증번호 이메일 발송',
   })
   @Get('/email')
-  async sendVerificationCodeEmail(): Promise<SuccessResponse> {
-    await this.authService.sendVerificationCodeEmail();
+  async sendVerificationCodeEmail(
+    @Query() query: SendVerificationCodeEmailQuery,
+  ): Promise<SuccessResponse> {
+    await this.authService.sendVerificationCodeEmail(query);
 
     return new SuccessResponse();
   }
