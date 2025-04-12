@@ -5,9 +5,8 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "lib/mail/template/**/*",
-        "outDir": "dist/src",
-        "watchAssets": true
+        "include": "**/*.hbs",
+        "outDir": "dist/src"
       }
     ],
     "plugins": [
