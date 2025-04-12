@@ -2,14 +2,14 @@ name: Trigger Cloudtype Deploy on Schedule
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # every day at 5:00 AM UTC
+    - cron: '*/1 * * * *' # Every 1 minutes (for testing)
 
 jobs:
   trigger-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Deploy Workflow
-        uses: peter-evans/workflow-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v1.2.0
         with:
-          workflow: deploy-main.yml
+          workflow: Deploy to cloudtype
           ref: main
