@@ -1,4 +1,4 @@
-name: CloudType Deployment
+name: Dev Deployment
 
 on:
   schedule:
@@ -9,11 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-server:
+    name: cultpick-server-dev Deployment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Deploy
         uses: cloudtype-github-actions/deploy@v1
         with:
@@ -52,3 +54,35 @@ jobs:
                 url: https://github.com/${{ github.repository }}.git
                 ref: ${{ github.ref }}
               preset: nest.js
+
+  deploy-db:
+    name: cultpick-db-dev Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: aptheparker/aptheparker
+          stage: main
+          yaml: |
+            name: cultpick-db-dev
+            app: postgresql@16
+            options:
+              rootusername: root
+              rootpassword: cultpick2025
+              database: cultpick
+            context:
+              preset: postgresql
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
