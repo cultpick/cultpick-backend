@@ -31,28 +31,29 @@ jobs:
             options:
               env:
                 - name: DATABASE_URL
-                  value: postgresql://root:cultpick2025@svc.sel4.cloudtype.app:31843/postgres
+                  value: ${{ secrets.DATABASE_URL }}
                 - name: OPEN_API_URL
-                  value: http://www.kopis.or.kr/openApi/restful
+                  value: ${{ secrets.OPEN_API_URL }}
                 - name: SERVICE_KEY
-                  value: fc207504c94344cbbcf5560aa110ec7f
+                  value: ${{ secrets.SERVICE_KEY }}
                 - name: PORT
                   value: "3001"
                 - name: SMTP_USER
-                  value: culpick@gmail.com
+                  value: ${{ secrets.SMTP_USER }}
                 - name: SMTP_PASSWORD
-                  value: mpvq mixq svte hwlc
+                  value: ${{ secrets.SMTP_PASSWORD }}
                 - name: JWT_SECRET
-                  value: cultpick-jwt-secret
+                  value: ${{ secrets.JWT_SECRET }}
                 - name: ACCESS_TOKEN_SECRET
-                  value: cultpick-access-token-secret
+                  value: ${{ secrets.ACCESS_TOKEN_SECRET }}
                 - name: SIGN_UP_TOKEN_SECRET
-                  value: cultpick-sign-up-token-secret
+                  value: ${{ secrets.SIGN_UP_TOKEN_SECRET }}
               ports: "3001"
               build: pnpm prisma generate && pnpm build
               start: pnpm start:prod
               install: pnpm i
               buildenv: []
+
             context:
               git:
                 url: https://github.com/${{ github.repository }}.git
@@ -75,11 +76,14 @@ jobs:
           stage: main
           yaml: |
             name: cultpick-db-dev
+
             app: postgresql@16
+
             options:
               rootusername: root
-              rootpassword: cultpick2025
+              rootpassword: ${{ secrets.DB_ROOT_PASSWORD }}
               database: cultpick
+
             context:
               preset: postgresql
               git:
