@@ -44,6 +44,10 @@ jobs:
                   value: mpvq mixq svte hwlc
                 - name: JWT_SECRET
                   value: cultpick-jwt-secret
+                - name: ACCESS_TOKEN_SECRET
+                  value: cultpick-access-token-secret
+                - name: SIGN_UP_TOKEN_SECRET
+                  value: cultpick-sign-up-token-secret
               ports: "3001"
               build: pnpm prisma generate && pnpm build
               start: pnpm start:prod
