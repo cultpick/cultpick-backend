@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PerformanceService } from './performance.service';
 import { GetRecommendedPerformanceListQuery } from './dto/request/get-recommended-performance-list.query';
 import { GetOngoingPerformanceListQuery } from './dto/request/get-ongoing-performance-list.query';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { AccessTokenBearerGuard } from 'src/auth/guard/access-token-bearer.guard';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import { UserInfo } from 'src/auth/type';
 import { GetPersonalizedPerformanceListQuery } from './dto/request/get-personalized-performance-list.query';
@@ -13,7 +13,7 @@ import { GetSearchedPerformanceResponse } from './dto/response/get-searched-perf
 import { GetPerformanceDetailResponse } from './dto/response/get-performance-detail.response';
 
 @ApiTags('Performance (공연)')
-@ApiBearerAuth('access-token')
+@ApiBearerAuth('jwt')
 @Controller('/performance')
 export class PerformanceController {
   constructor(private readonly performanceService: PerformanceService) {}
@@ -47,7 +47,7 @@ export class PerformanceController {
   @ApiOperation({
     summary: '개인화 공연 목록 조회',
   })
-  @UseGuards(JwtGuard)
+  @UseGuards(AccessTokenBearerGuard)
   @Get('/personalized')
   async getPersonalizedPerformanceList(
     @CurrentUser() user: UserInfo,

@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 @Injectable()
-export class JwtGuard implements CanActivate {
+export class AccessTokenBearerGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
@@ -24,9 +24,9 @@ export class JwtGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token);
-
-      const request = context.switchToHttp().getRequest();
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('ACCESS_TOKEN_SECRET'),
+      });
 
       request['user'] = payload;
     } catch {

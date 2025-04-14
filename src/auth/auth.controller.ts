@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpRequest } from './dto/request/sign-up.request';
 import { SignInRequest } from './dto/request/sign-in.request';
 import { SignInResponse } from './dto/response/sign-in.response';
@@ -8,8 +8,11 @@ import { CheckEmailRequest } from './dto/request/check-email.request';
 import { SuccessResponse } from 'src/common/dto/response/success.response';
 import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
 import { ValidateVerificationCodeRequest } from './dto/request/validate-verification-code.request';
+import { ValidateVerificationCodeResponse } from './dto/response/validate-verification-code.response';
+import { SignUpTokenBearerGuard } from './guard/sign-up-token-bearer.guard';
 
 @ApiTags('Auth (인증)')
+@ApiBearerAuth('jwt')
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -38,6 +41,7 @@ export class AuthController {
   @ApiOperation({
     summary: '회원가입',
   })
+  @UseGuards(SignUpTokenBearerGuard)
   @Post('/sign-up')
   async signUp(@Body() body: SignUpRequest): Promise<SuccessResponse> {
     await this.authService.signUp(body);
@@ -63,9 +67,9 @@ export class AuthController {
   @Post('/verification/validate')
   async validateVerificationCode(
     @Body() body: ValidateVerificationCodeRequest,
-  ): Promise<SuccessResponse> {
-    await this.authService.validateVerificationCode(body);
+  ): Promise<ValidateVerificationCodeResponse> {
+    const signUpToken = await this.authService.validateVerificationCode(body);
 
-    return new SuccessResponse();
+    return new ValidateVerificationCodeResponse(signUpToken);
   }
 }

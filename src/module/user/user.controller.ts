@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { AccessTokenBearerGuard } from 'src/auth/guard/access-token-bearer.guard';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import { UserInfo } from 'src/auth/type';
 import { GetUserDetailResponse } from './dto/response/get-user-detail.response';
@@ -9,8 +9,8 @@ import { UpdateUserDetailRequest } from './dto/request/update-user-detail.reques
 import { SuccessResponse } from 'src/common/dto/response/success.response';
 
 @ApiTags('User (유저)')
-@ApiBearerAuth('access-token')
-@UseGuards(JwtGuard)
+@ApiBearerAuth('jwt')
+@UseGuards(AccessTokenBearerGuard)
 @Controller('/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PickService } from './pick.service';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { AccessTokenBearerGuard } from 'src/auth/guard/access-token-bearer.guard';
 import { CreatePickRequest } from './dto/request/create-pick.request';
 import { CurrentUser } from 'src/common/decorator/current-user.decorator';
 import { UserInfo } from 'src/auth/type';
@@ -11,8 +11,8 @@ import { DeletePickListResponse } from './dto/response/delete-pick-list.response
 import { GetPerformanceListResponse } from '../performance/dto/response/get-performance-list.response';
 
 @ApiTags('Pick (픽)')
-@ApiBearerAuth('access-token')
-@UseGuards(JwtGuard)
+@ApiBearerAuth('jwt')
+@UseGuards(AccessTokenBearerGuard)
 @Controller('/pick')
 export class PickController {
   constructor(private readonly pickService: PickService) {}

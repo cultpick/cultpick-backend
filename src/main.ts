@@ -14,7 +14,7 @@ async function bootstrap() {
         scheme: 'bearer',
         bearerFormat: 'Bearer',
       },
-      'access-token',
+      'jwt',
     )
     .build();
 

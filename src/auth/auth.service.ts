@@ -14,11 +14,13 @@ import { SendVerificationCodeMailRequest } from './dto/request/send-verification
 import { generateRandomCode } from 'src/common/util/random';
 import dayjs from 'dayjs';
 import { ValidateVerificationCodeRequest } from './dto/request/validate-verification-code.request';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
   ) {}
@@ -57,7 +59,9 @@ export class AuthService {
 
     const payload = { id: user.id, name: user.name };
 
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('ACCESS_TOKEN_SECRET'),
+    });
 
     return accessToken;
   }
@@ -85,8 +89,8 @@ export class AuthService {
       );
     }
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const user = await prisma.user.create({
+    await this.prismaService.$transaction(async (tx) => {
+      const createdUser = await tx.user.create({
         data: {
           email,
           password,
@@ -98,15 +102,15 @@ export class AuthService {
       });
 
       if (favoriteCategoryCodes?.length) {
-        await prisma.userToCategory.createMany({
+        await tx.userToCategory.createMany({
           data: favoriteCategoryCodes.map((categoryCode) => ({
-            userId: user.id,
+            userId: createdUser.id,
             categoryCode,
           })),
         });
       }
 
-      return user;
+      return createdUser;
     });
   }
 
@@ -158,7 +162,7 @@ export class AuthService {
 
   async validateVerificationCode(
     @Body() body: ValidateVerificationCodeRequest,
-  ): Promise<void> {
+  ): Promise<string> {
     const { email, code } = body;
 
     const verificationCode =
@@ -189,5 +193,13 @@ export class AuthService {
         email,
       },
     });
+
+    const payload = { email };
+
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('SIGN_UP_TOKEN_SECRET'),
+    });
+
+    return accessToken;
   }
 }
