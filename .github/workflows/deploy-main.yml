@@ -2,7 +2,7 @@ name: Dev Deployment
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Every 09:00 (KST)
+    - cron: '0 * * * *' # Every hour
   push:
     branches:
       - main
