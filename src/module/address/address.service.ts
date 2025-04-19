@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { addressData } from 'src/common/data/address';
+import { addressData } from 'src/module/address/address';
 
 @Injectable()
 export class AddressService {

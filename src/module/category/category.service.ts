@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { categoryData } from 'src/common/data/category';
+import { categoryData } from 'src/module/category/category';
 
 @Injectable()
 export class CategoryService {
