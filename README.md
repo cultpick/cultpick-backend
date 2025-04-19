@@ -47,8 +47,8 @@ pnpm start:debug
 ├── src/
 │   ├── auth/                   # 인증 및 인가 관련 모듈
 │   ├── common/                 # 공통 유틸리티, 필터, 인터셉터, 데코레이터 등
-│   ├── lib/                    # 재사용 가능한 라이브러리 또는 비즈니스 로직 모음
 │   ├── module/                 # 도메인 기반 모듈 집합 (실제 주요 기능 구현 위치)
+│   │   └── lib/                # 재사용 가능한 라이브러리 또는 비즈니스 로직 모음
 │   ├── app.controller.ts
 │   ├── app.module.ts
 │   ├── app.service.ts
