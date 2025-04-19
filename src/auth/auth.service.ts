@@ -9,7 +9,6 @@ import { PrismaService } from 'prisma/prisma.service';
 import { SignInRequest } from './dto/request/sign-in.request';
 import { JwtService } from '@nestjs/jwt';
 import { CheckEmailRequest } from './dto/request/check-email.request';
-import { MailService } from 'src/lib/mail/mail.service';
 import { SendVerificationCodeMailRequest } from './dto/request/send-verification-code-mail.request';
 import { generateRandomCode } from 'src/common/util/random';
 import dayjs from 'dayjs';
@@ -18,6 +17,7 @@ import { ConfigService } from '@nestjs/config';
 import { UpdatePasswordRequest } from './dto/request/update-password.request';
 import { VerifiedUserInfo } from './type';
 import { UserService } from 'src/module/user/user.service';
+import { MailService } from 'src/module/other/mail/mail.service';
 
 @Injectable()
 export class AuthService {
