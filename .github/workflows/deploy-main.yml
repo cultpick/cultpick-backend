@@ -42,8 +42,6 @@ jobs:
                   value: ${{ secrets.SMTP_USER }}
                 - name: SMTP_PASSWORD
                   value: ${{ secrets.SMTP_PASSWORD }}
-                - name: JWT_SECRET
-                  value: ${{ secrets.JWT_SECRET }}
                 - name: ACCESS_TOKEN_SECRET
                   value: ${{ secrets.ACCESS_TOKEN_SECRET }}
                 - name: VERIFICATION_TOKEN_SECRET
