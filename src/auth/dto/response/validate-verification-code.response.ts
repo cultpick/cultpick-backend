@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ValidateVerificationCodeResponse {
-  @ApiProperty({ description: 'SignUpToken', example: 'SignUpToken' })
-  signUpToken: string;
+  @ApiProperty({
+    description: 'VerificationToken',
+    example: 'VerificationToken',
+  })
+  verificationToken: string;
 
-  constructor(signUpToken: string) {
-    this.signUpToken = signUpToken;
+  constructor(verificationToken: string) {
+    this.verificationToken = verificationToken;
   }
 }

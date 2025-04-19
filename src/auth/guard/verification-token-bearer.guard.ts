@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 @Injectable()
-export class SignUpTokenBearerGuard implements CanActivate {
+export class VerificationTokenBearerGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
@@ -20,15 +20,19 @@ export class SignUpTokenBearerGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException('JWT 토큰이 없습니다.');
+      throw new UnauthorizedException('verification token이 없습니다.');
     }
 
     try {
-      await this.jwtService.verifyAsync(token, {
-        secret: this.configService.get('SIGN_UP_TOKEN_SECRET'),
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('VERIFICATION_TOKEN_SECRET'),
       });
+
+      request['verifiedUser'] = payload;
     } catch {
-      throw new UnauthorizedException('JWT 토큰이 유효하지 않습니다.');
+      throw new UnauthorizedException(
+        'verification token이 유효하지 않습니다.',
+      );
     }
     return true;
   }

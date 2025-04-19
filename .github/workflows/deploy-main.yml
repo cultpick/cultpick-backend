@@ -46,8 +46,8 @@ jobs:
                   value: ${{ secrets.JWT_SECRET }}
                 - name: ACCESS_TOKEN_SECRET
                   value: ${{ secrets.ACCESS_TOKEN_SECRET }}
-                - name: SIGN_UP_TOKEN_SECRET
-                  value: ${{ secrets.SIGN_UP_TOKEN_SECRET }}
+                - name: VERIFICATION_TOKEN_SECRET
+                  value: ${{ secrets.VERIFICATION_TOKEN_SECRET }}
               ports: "3001"
               build: pnpm prisma generate && pnpm build
               start: pnpm start:prod

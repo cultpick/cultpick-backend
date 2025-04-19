@@ -20,7 +20,7 @@ export class AccessTokenBearerGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException('JWT 토큰이 없습니다.');
+      throw new UnauthorizedException('accessToken이 없습니다.');
     }
 
     try {
@@ -30,7 +30,7 @@ export class AccessTokenBearerGuard implements CanActivate {
 
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException('JWT 토큰이 유효하지 않습니다.');
+      throw new UnauthorizedException('accessToken이 유효하지 않습니다.');
     }
     return true;
   }

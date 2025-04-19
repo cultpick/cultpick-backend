@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { UpdatePasswordRequest } from './update-password.request';
 
-export class SignInRequest {
+export class SignInRequest extends UpdatePasswordRequest {
   @ApiProperty({
     description: '이메일',
     example: 'test@test.com',
@@ -10,12 +11,4 @@ export class SignInRequest {
   @IsString()
   @IsEmail()
   email: string;
-
-  @ApiProperty({
-    description: '비밀번호',
-    example: 'pass',
-  })
-  @IsNotEmpty()
-  @IsString()
-  password: string;
 }

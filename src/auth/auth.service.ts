@@ -15,6 +15,9 @@ import { generateRandomCode } from 'src/common/util/random';
 import dayjs from 'dayjs';
 import { ValidateVerificationCodeRequest } from './dto/request/validate-verification-code.request';
 import { ConfigService } from '@nestjs/config';
+import { UpdatePasswordRequest } from './dto/request/update-password.request';
+import { VerifiedUserInfo } from './type';
+import { UserService } from 'src/module/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +26,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
+    private readonly userService: UserService,
   ) {}
 
   async checkEmail(body: CheckEmailRequest): Promise<void> {
@@ -41,19 +45,33 @@ export class AuthService {
     }
   }
 
-  async signIn(body: SignInRequest): Promise<string> {
-    const { email, password } = body;
+  async updatePassword(
+    verifiedUserInfo: VerifiedUserInfo,
+    body: UpdatePasswordRequest,
+  ): Promise<void> {
+    const { email } = verifiedUserInfo;
+    const { password } = body;
 
-    const user = await this.prismaService.user.findFirst({
+    const user = await this.userService.getUserByUserEmail(email);
+
+    await this.prismaService.user.update({
       where: {
-        email,
+        id: user.id,
+      },
+      data: {
         password,
       },
     });
+  }
 
-    if (!user) {
-      throw new NotFoundException(
-        `해당 사용자를 찾을 수 없습니다. (email: ${email})`,
+  async signIn(body: SignInRequest): Promise<string> {
+    const { email, password } = body;
+
+    const user = await this.userService.getUserByUserEmail(email);
+
+    if (user.password !== password) {
+      throw new BadRequestException(
+        `비밀번호가 일치하지 않습니다. (email: ${email})`,
       );
     }
 
@@ -66,9 +84,12 @@ export class AuthService {
     return accessToken;
   }
 
-  async signUp(body: SignUpRequest): Promise<void> {
+  async signUp(
+    verifiedUserInfo: VerifiedUserInfo,
+    body: SignUpRequest,
+  ): Promise<void> {
+    const { email } = verifiedUserInfo;
     const {
-      email,
       password,
       name,
       birthDate,
@@ -77,17 +98,7 @@ export class AuthService {
       favoriteCategoryCodes,
     } = body;
 
-    const user = await this.prismaService.user.findFirst({
-      where: {
-        email,
-      },
-    });
-
-    if (user) {
-      throw new BadRequestException(
-        `이미 사용 중인 이메일입니다. (email: ${email})`,
-      );
-    }
+    await this.checkEmail({ email });
 
     await this.prismaService.$transaction(async (tx) => {
       const createdUser = await tx.user.create({
@@ -128,11 +139,12 @@ export class AuthService {
         },
       });
 
-    // 1분 후에 다시 시도
+    // 최근 발송 시간으로부터 1분 이내에 다시 시도하는 경우
     if (
       existingVerificationCode &&
-      existingVerificationCode.updatedAt >
-        dayjs().subtract(1, 'minutes').toDate()
+      dayjs().isBefore(
+        dayjs(existingVerificationCode.updatedAt).add(1, 'minutes'),
+      )
     ) {
       throw new BadRequestException(
         `1분 후에 다시 시도해주세요. (email: ${email})`,
@@ -197,7 +209,7 @@ export class AuthService {
     const payload = { email };
 
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('SIGN_UP_TOKEN_SECRET'),
+      secret: this.configService.get('VERIFICATION_TOKEN_SECRET'),
     });
 
     return accessToken;
