@@ -2,7 +2,8 @@ name: Dev Deployment
 
 on:
   schedule:
-    - cron: '0 * * * *' # Every hour
+    # 서버가 3시부터 9시까지 중지 되므로, 그 시간대에만 10분마다 배포
+    - cron: '*/10 3-9 * * *'
   push:
     branches:
       - main
@@ -21,7 +22,7 @@ jobs:
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
-          project: aptheparker/aptheparker
+          project: aptheparker/free
           stage: main
           yaml: >
             name: cultpick-server-dev
@@ -70,7 +71,7 @@ jobs:
         with:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           ghtoken: ${{ secrets.GHP_TOKEN }}
-          project: aptheparker/aptheparker
+          project: aptheparker/free
           stage: main
           yaml: |
             name: cultpick-db-dev
