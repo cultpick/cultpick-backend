@@ -67,10 +67,24 @@ export class UserService {
   async deleteUser(userInfo: UserInfo): Promise<void> {
     await this.getUserByUserId(userInfo.id);
 
-    await this.prismaService.user.delete({
-      where: {
-        id: userInfo.id,
-      },
+    await this.prismaService.$transaction(async (tx) => {
+      await tx.userToCategory.deleteMany({
+        where: {
+          userId: userInfo.id,
+        },
+      });
+
+      await tx.pick.deleteMany({
+        where: {
+          userId: userInfo.id,
+        },
+      });
+
+      await tx.user.delete({
+        where: {
+          id: userInfo.id,
+        },
+      });
     });
   }
 
